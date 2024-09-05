@@ -22,5 +22,12 @@ int enqueue(Queue *q, Node *val) { //1 if okay, 0 if error
 }
 
 int dequeue(Queue *q) {
-    //termianr
+    if (!q->head) {
+        Node * aux = q->head.next;
+        int val = q->head.val;
+        q->head->next->bef = NULL; // isso ta certo ?
+
+        q->head = aux;
+        return val;
+    }
 }

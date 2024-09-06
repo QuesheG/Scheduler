@@ -1,7 +1,11 @@
+#include <stdio.h>
+#include "schedule.h"
+
 typedef struct table {
-    long long init;
-    long long end;
-    //nao ta faltando muita coisa aqui?
+    FILE * PC;
+    State estado;
+    Registradores Regs;
+    
 } BCP;
 
 typedef struct node {
@@ -15,6 +19,6 @@ typedef struct q {
     Node *end;
 } Queue;
 
-int is_empty(Queue *q); //1 if empty, 0 otherwise
-int enqueue(Queue *q, Node *val); //1 if okay, 0 if error
+char is_empty(Queue *q); //1 if empty, 0 otherwise
+char enqueue(Queue *q, Node *val); //1 if okay, 0 if error
 int dequeue(Queue *q); //val of element

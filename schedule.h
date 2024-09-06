@@ -1,3 +1,8 @@
+typedef struct reg {
+    int X;
+    int Y;
+} Registradores;
+
 typedef enum comm {
     IO,
     COM,

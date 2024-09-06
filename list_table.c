@@ -1,11 +1,11 @@
 #include "list_table.h"
 
-int is_empty(Queue *q){ //1 if empty, 0 otherwise
+char is_empty(Queue *q){ //1 if empty, 0 otherwise
     if(!q->head) return 1;
     return 0;
 }
 
-int enqueue(Queue *q, Node *process, /*BCP * bcp (?)*/ ) { //1 if okay, 0 if error
+char enqueue(Queue *q, Node *process/*, BCP * bcp (?)*/ ) { //1 if okay, 0 if error
     /*
     if(!q) return 0;
     if(q->head) {

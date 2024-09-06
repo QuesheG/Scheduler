@@ -1,6 +1,7 @@
 typedef struct table {
     long long init;
     long long end;
+    //nao ta faltando muita coisa aqui?
 } BCP;
 
 typedef struct node {

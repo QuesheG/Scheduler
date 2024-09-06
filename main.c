@@ -1,4 +1,5 @@
 #include "schedule.h"
+#include "list_table.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -28,7 +29,7 @@ int read_val(FILE *file) {
 }
 
 //parser para cada linha do arquivo texto recebido
-Comm line_reader(FILE *file) {
+Comm line_reader(FILE *file) {  //Eu (luiyu) pergunto-me se nao é melhor ler um file (programa) por vez e ja ir armazendando os comandos nos arrays
     Comm found = END;
     char c[3] = {'A', 'A', 'A'};
     char atrib1[2] = {'X', '='};
@@ -75,6 +76,13 @@ int main(void) {
     }
 
     //ler prios
+
+
+    /*Depois de ler prios, ir colocando na fila de prontos de forma ja ordenada
+    while () {
+        add_to_ready_queue(); 
+    }
+    */
 
     
     return 0;

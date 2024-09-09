@@ -59,7 +59,26 @@ Comm line_reader(FILE *file) {  //Eu (luiyu) pergunto-me se nao é melhor ler um
     }
 }
 
+Scheduler * create_scheduler(){
+    Scheduler *s = (Scheduler *)malloc(sizeof(Scheduler));
+
+    s->table = (BCP *)malloc(sizeof(BCP) * 10);
+    s->blocked_queue = create_queue();
+    s->ready_queue = create_queue();
+
+    return s;
+}
+
+void load_program(BCP * bcp, int proc_number){
+    //read from archive
+    //load commands in bcp->address[]
+    //set registers on 0
+}  
+
 int main(void) {
+    //Cria escalonador
+    Scheduler * scheduler = create_scheduler();
+
     //checa quantum
     FILE *q = fopen("quantum.txt", "r");
     if(!q) {
@@ -68,22 +87,27 @@ int main(void) {
         printf("Exiting...\n");
         return 0;
     }
-    int quantum = read_val(q);
+    scheduler->quantum = read_val(q);
     if(q<1) {
         printf("Quantum should be greater than 0\n");
         printf("Exiting...\n");
         return 0;
     }
 
-    //ler prios
+    //Carregar programas em memoria
+    for (int i = 0; i < 10; i++) {
+        //ler prios;
 
+        //carregar programas para memoria
+        load_program(scheduler->table[i], i);
 
-    /*Depois de ler prios, ir colocando na fila de prontos de forma ja ordenada
-    while () {
-        add_to_ready_queue(); 
+        //load_process(i, scheduler); 
+        //log_function(); Dps da pra fazer isso no final
+
+        enqueue(scheduler->ready_queue , i);
     }
-    */
 
     
     return 0;
 }
+

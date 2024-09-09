@@ -20,5 +20,6 @@ typedef enum state {
 typedef struct proc {
     int x;
     int y;
+    int io_timer;
     char text[25];
 } Process;

@@ -1,8 +1,9 @@
 #include "list_table.h"
+#include "schedule.h"
 
-char is_empty(Queue *q){ //1 if empty, 0 otherwise
-    if(!q->head) return 1;
-    return 0;
+bool is_empty(Queue *q){ //true if empty
+    if(!q->head) return true;
+    return false;
 }
 
 Queue * create_queue(){
@@ -18,7 +19,7 @@ Node * create_node(int val){
     return node;
 }
 
-char enqueue(Queue *q, int val, Scheduler * scheduler) { //1 if okay, 0 if error
+bool enqueue(Queue *q, int val, Scheduler * scheduler) { //true if okay
     /*
     if(!q) return 0;
     if(q->head) {
@@ -38,11 +39,13 @@ char enqueue(Queue *q, int val, Scheduler * scheduler) { //1 if okay, 0 if error
     //mas acho que e melhor fazer um que dado a fila e um processo a ser colocado, ja colocasse diretamente
     //na posicao certa
     //Ai tambem nao precisa ordenar todos eles antes de ir "carregando na memoria"
-    
+    if(!q) return false;
+    if(!scheduler) return false;
+
     Node * new_node = create_node(val);
     if (is_empty(q)) {
         q->head = new_node;
-        return 1;
+        return true;
     }
     
     Node * p = q->head;
@@ -55,8 +58,7 @@ char enqueue(Queue *q, int val, Scheduler * scheduler) { //1 if okay, 0 if error
             }else{
                 last_node_visited->next = new_node;
             }
-            
-            return 1;
+            return true;
         }
 
         last_node_visited = p;
@@ -64,12 +66,13 @@ char enqueue(Queue *q, int val, Scheduler * scheduler) { //1 if okay, 0 if error
     }
     //caso seja o ultimo da fila
     p->next = new_node;
-    return 1;
+    return true;
 }
 
 int dequeue(Queue *q) { 
+    if(!q) return -1;
     if (!q->head) {
-        //redo
+        return -1;
     }
 }
 

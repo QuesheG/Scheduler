@@ -1,7 +1,7 @@
-#include "schedule.h"
-#include "list_table.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "list_table.h"
+#include "schedule.h"
 
 int compare_res(char *a, char *b, size_t siz) {
     int res = 0;
@@ -28,53 +28,6 @@ int read_val(FILE *file) {
     return atol(res);
 }
 
-//parser para cada linha do arquivo texto recebido
-Comm line_reader(FILE *file) {  //Eu (luiyu) pergunto-me se nao é melhor ler um file (programa) por vez e ja ir armazendando os comandos nos arrays
-    Comm found = END;
-    char c[3] = {'A', 'A', 'A'};
-    char atrib1[2] = {'X', '='};
-    char atrib2[2] = {'Y', '='};
-    char exit[3] = {'S', 'A'};
-    char com[3] = {'C', 'O'};
-    char io[3] = {'E', '/'};
-    /************************
-    * FORMATO DOS COMANDOS: *
-    * COM       -> COM      *
-    * X|Y=INT   -> ATRIB    *
-    * E/S       -> IO       *
-    * SAIDA     -> END      *
-    ************************/
-    fread(c, sizeof(char), 2, file);
-    if(compare_res(c, com,  3)) return COM;
-    if(compare_res(c, exit, 3)) return END;
-    if(compare_res(c, io,   3)) return IO;
-
-    if(compare_res(c, atrib1, 2)) {
-        int val = read_val(file);
-        //TODO: armazenar valor recebido em X;
-    }
-    else if(compare_res(c, atrib2, 2)) {
-        int val = read_val(file);
-        //TODO: armazenar valor recebido em Y;
-    }
-}
-
-Scheduler * create_scheduler(){
-    Scheduler *s = (Scheduler *)malloc(sizeof(Scheduler));
-
-    s->table = (BCP *)malloc(sizeof(BCP) * 10);
-    s->blocked_queue = create_queue();
-    s->ready_queue = create_queue();
-
-    return s;
-}
-
-void load_program(BCP * bcp, int proc_number){
-    //read from archive
-    //load commands in bcp->address[]
-    //set registers on 0
-}  
-
 int main(void) {
     //Cria escalonador
     Scheduler * scheduler = create_scheduler();
@@ -88,7 +41,7 @@ int main(void) {
         return 0;
     }
     scheduler->quantum = read_val(q);
-    if(q<1) {
+    if(scheduler->quantum<1) {
         printf("Quantum should be greater than 0\n");
         printf("Exiting...\n");
         return 0;
@@ -99,10 +52,10 @@ int main(void) {
         //ler prios;
 
         //carregar programas para memoria
-        load_program(scheduler->table[i], i);
+        load_program(scheduler->table[i], i); //FIXME: atualmente essa linha ta dando uma string e pá, tem q mudar pra passar o arquivo e ir alocando o bcp na tabela
 
-        //load_process(i, scheduler); 
-        //log_function(); Dps da pra fazer isso no final
+        //load_process(i, scheduler); // (quesheg) acho q poderíamos fazer esse primeiro, pra aí já ir alocando os arquivos na ordem q precisa e criar a fila ordenadamente
+        //log_function(); Dps da pra fazer isso no final //TODO: logs -_-
 
         enqueue(scheduler->ready_queue , i);
     }

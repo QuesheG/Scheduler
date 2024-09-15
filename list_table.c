@@ -21,6 +21,7 @@ Node * create_node(int val){
 
 bool enqueue_ready(Scheduler * scheduler, Node * new_node) { //true if okay
     Queue * q = scheduler->ready_queue;
+    Queue * q = scheduler->ready_queue;
     if(!q) return false;
     if(!scheduler) return false;
 
@@ -52,7 +53,7 @@ bool enqueue_ready(Scheduler * scheduler, Node * new_node) { //true if okay
     return true;
 }
 
-Node * dequeue_ready(Queue *q) { 
+Node * dequeue(Queue *q) { 
     if(!q->head) return NULL;
     if(!q) return NULL;
 
@@ -63,13 +64,13 @@ Node * dequeue_ready(Queue *q) {
     return process;
 }
 
-bool enqueue_blocked(Scheduler * scheduler, int val){
-    Node * new_node = create_node(val);
+bool enqueue_blocked(Scheduler * scheduler, Node * new_node){
+    Queue * q = scheduler->blocked_queue;
     Queue * q = scheduler->blocked_queue;
     Node * p = q->head;
     
     //Set the io timer in process
-    scheduler->table[val]->io_timer = 2;
+    scheduler->table[new_node->val]->io_timer = 2;
 
     while(p){ 
         if(!p->next){
@@ -82,16 +83,18 @@ bool enqueue_blocked(Scheduler * scheduler, int val){
     return false;
 }
 
-int dequeue_blocked(Queue *q) { 
-    if(!q->head) return -1;
-    if(!q) return -1;
 
-    int val = q->head->val;
-    
-    Node * aux = q->head;
-    q->head = q->head->next;
+void update_blocked_queue(Scheduler * scheduler){
+    Queue * q = scheduler->blocked_queue;
+    Node * p = q->head;
 
-    free(aux);
-    return val;
+    while (p) {
+        scheduler->table[p->val]->io_timer--;
+        if(scheduler->table[p->val]->io_timer == 0){
+            scheduler->table[p->val]->state = READY;
+            Node * process = dequeue(q);
+            enqueue_ready(scheduler, process);
+        }
+        p = p->next;
+    }
 }
-

@@ -3,7 +3,7 @@
 typedef struct reg {
     int X;
     int Y;
-    int PC;
+    int PC; //int que guarda a posição 
 } Registers;
 
 typedef enum comm {
@@ -31,6 +31,7 @@ typedef struct bcp {
     State state;
     Registers regs; //Transferi o PC para cá
     int credits;
+    int io_timer; //Transferindo iotimer para ca, nao sei se sera necessario aquela struct Process
 } BCP;
 
 typedef struct Scheduler{

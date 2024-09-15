@@ -7,8 +7,9 @@ BCP * createBCP(State state, int credits){
     bcp->regs.X = 0;
     bcp->regs.Y = 0;
     bcp->regs.PC = 0;
-    bcp->credits = credits; //FIXME: esse aqui tem q mudar pq nem sei oq significa pra falar a real
-    return 0;
+    bcp->credits = credits; //FIXME: esse aqui tem q mudar pq nem sei oq significa pra falar a real (luiyu reply)-> credits sao os creditos de prioridade a serem gastados
+    bcp->io_timer = 0;
+    return bcp;
 }
 
 Scheduler * create_scheduler(){

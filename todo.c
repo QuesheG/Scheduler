@@ -8,10 +8,11 @@ O QUE PRECISA SER FEITO (ir avisando o que foi feito)
 - Ler Quantum (X)
 - Carregar processos;
 - Atribuir prioridades;
-- Implementar filas
-	Ready;
-	Blocked;
-- Carregar nas filas;
+- Implementar filas (X)
+	Ready; (X)
+	Blocked; (X)
+- Carregar nas filas; (X) (supostamente ja é para funcionar o carregamento)
+
 
 - Rodar n_com comandos;
 	Atribuiçao

@@ -19,30 +19,11 @@ Node * create_node(int val){
     return node;
 }
 
-bool enqueue(Queue *q, int val, Scheduler * scheduler) { //true if okay
-    /*
-    if(!q) return 0;
-    if(q->head) {
-        q->end->next = process;
-        process->bef = q->end->next;
-        q->end = process;
-        return 1;
-    }
-    else {
-        q->head = process;
-        q->end = process;
-        return 1;
-    }
-    return 0;
-    */
-    //Do jeito que ficou e so uma fila normal, nao sei qual o proposito geral dessa funcao quando voce pensou
-    //mas acho que e melhor fazer um que dado a fila e um processo a ser colocado, ja colocasse diretamente
-    //na posicao certa
-    //Ai tambem nao precisa ordenar todos eles antes de ir "carregando na memoria"
+bool enqueue_ready(Scheduler * scheduler, Node * new_node) { //true if okay
     if(!q) return false;
     if(!scheduler) return false;
 
-    Node * new_node = create_node(val);
+    Queue * q = scheduler->ready_queue;
     if (is_empty(q)) {
         q->head = new_node;
         return true;
@@ -51,9 +32,10 @@ bool enqueue(Queue *q, int val, Scheduler * scheduler) { //true if okay
     Node * p = q->head;
     Node * last_node_visited = NULL; 
     while(p){
-        if (scheduler->table[val] >= scheduler->table[p->val]) {
+        //if new_process' credits >= current_process add in position
+        if (scheduler->table[new_node->val]->credits >= scheduler->table[p->val]->credits) {
             new_node->next = p;
-            if(last_node_visited = NULL){
+            if(last_node_visited == NULL){
                 q->head = new_node;
             }else{
                 last_node_visited->next = new_node;
@@ -69,10 +51,45 @@ bool enqueue(Queue *q, int val, Scheduler * scheduler) { //true if okay
     return true;
 }
 
-int dequeue(Queue *q) { 
-    if(!q) return -1;
-    if (!q->head) {
-        return -1;
+Node * dequeue_ready(Queue *q) { 
+    if(!q->head) return NULL;
+    if(!q) return NULL;
+
+    Node * process = q->head;
+    q->head = q->head->next;
+    process->next = NULL;
+
+    return process;
+}
+
+bool enqueue_blocked(Scheduler * scheduler, int val){
+    Node * new_node = create_node(val);
+    Node * p = q->head;
+    
+    //Set the io timer in process
+    scheduler->table[val]->io_timer = 2;
+
+    while(p){ 
+        if(!p->next){
+            //adds the new_node in the end
+            p->next = new_node;
+            return true;
+        }
+        p = p->next;
     }
+    return false;
+}
+
+int dequeue_blocked(Queue *q) { 
+    if(!q->head) return -1;
+    if(!q) return -1;
+
+    int val = q->head->val;
+    
+    Node * aux = q->head;
+    q->head = q->head->next;
+
+    free(aux);
+    return val;
 }
 

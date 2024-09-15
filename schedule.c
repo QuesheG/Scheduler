@@ -12,12 +12,14 @@ BCP * createBCP(State state, int credits){
     return bcp;
 }
 
-Scheduler * create_scheduler(){
+Scheduler * create_scheduler(int quantum){
     Scheduler *s = (Scheduler *)malloc(sizeof(Scheduler));
 
     s->table = (BCP **)malloc(sizeof(BCP*) * 10);
     s->blocked_queue = create_queue();
     s->ready_queue = create_queue();
+    s->quantum = quantum;
+    s->io_time = 2;
 
     return s;
 }
@@ -81,7 +83,7 @@ BCP * load_program(FILE * fil, int proc_number){
     while(fread(c + i, sizeof(char), 1, fil)) {
         if(*(c + i) == '\n') {
             *(c + i) = '\0';
-            bcp->content[pc] = (char *)malloc(sizeof(char) * (i + 1));
+            bcp->content = (char *)malloc(sizeof(char) * (i + 1));
             cpystr(bcp->content[pc], c, i);
             i = 0;
             pc += 1;

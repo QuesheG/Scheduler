@@ -38,6 +38,7 @@ typedef struct Scheduler{
     BCP ** table; //Array de ponteiros de BCP (tabela de processos)
     Queue * ready_queue;
     Queue * blocked_queue;
+    int io_time;
     int quantum;
 } Scheduler;
 

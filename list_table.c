@@ -88,7 +88,7 @@ void update_blocked_queue(Scheduler * scheduler){
     Node * p = q->head;
 
     while (p) {
-        scheduler->table[p->val]->io_timer--;
+        scheduler->table[p->val]->io_timer--; //decrease the io_timer
         if(scheduler->table[p->val]->io_timer == 0){
             scheduler->table[p->val]->state = READY;
             Node * process = dequeue(q);

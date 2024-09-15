@@ -125,6 +125,23 @@ int read_priority(int proc_num) {
     return priority;
 }
 
-void next_process(Scheduler * scheduler){
-    
+//return -1 if there is no process to run, 0 if the context isnt changed, 1 if context will be changed
+int next_process(Scheduler * s){
+    int actual_process = s->ready_queue->head->val;
+    int next_process = s->ready_queue->head->next->val;
+
+    if (!actual_process){ 
+        return -1;
+    }
+    if (!next_process){ 
+        return 0;
+    }
+
+    //if the actual credits are lower than the next credits, reenqueue the actual process
+    if(s->table[actual_process]->credits < s->table[next_process]->credits){
+        enqueue_ready(dequeue(s->ready_queue));
+        return 1;
+    }
+
+    return 0;
 }

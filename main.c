@@ -77,7 +77,19 @@ int main(void) {
         update_blocked_queue();
 
         //Escolhe proximo processo
-        //TODO: next_process();
+        switch (next_process()) {
+        case -1:
+
+            break;
+
+        case 0:
+
+            break;
+        
+        case 1:
+
+            break;
+        }
         
         //Pequenos ajustes de casos especificos descritos no ep
     }

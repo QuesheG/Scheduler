@@ -96,3 +96,4 @@ BCP * load_program(FILE * fil, int proc_number){
     }
     return bcp;
 }
+

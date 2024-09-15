@@ -11,7 +11,7 @@ typedef enum comm {
     COM,
     ATRIB,
     END
-} Comm;
+} Comm; //FIXME: isso aqui alguma hora vai deixar de existir
 
 typedef enum state {
     BLOCK,

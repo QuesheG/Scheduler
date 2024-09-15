@@ -47,6 +47,10 @@ int main(void) {
         return 0;
     }
 
+    //q1 -> prontos
+    //q2 -> blocked
+    //p* -> rodando
+
     //Carregar programas em memoria
     for (int i = 0; i < 10; i++) {
         //ler prios;
@@ -74,7 +78,7 @@ int main(void) {
 
 
         //Atualiza a fila de bloqueados e os reinsere
-        update_blocked_queue();
+        update_blocked_queue(scheduler);
 
         //Escolhe proximo processo
         switch (next_process()) {

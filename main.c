@@ -66,7 +66,7 @@ int main(void) {
 
     bool run = true;
 
-    while (run == true) { //main while
+    while (run) { //main while
         //Ler primeiro da fila de ready
         //Ler do bcp desse processo o comando a ser executado
 

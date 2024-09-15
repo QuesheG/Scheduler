@@ -124,3 +124,7 @@ int read_priority(int proc_num) {
     fclose(arq_prio);
     return priority;
 }
+
+void next_process(Scheduler * scheduler){
+    
+}

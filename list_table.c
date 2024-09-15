@@ -83,7 +83,6 @@ bool enqueue_blocked(Scheduler * scheduler, Node * new_node){
     return false;
 }
 
-
 void update_blocked_queue(Scheduler * scheduler){
     Queue * q = scheduler->blocked_queue;
     Node * p = q->head;

@@ -46,3 +46,4 @@ BCP * createBCP(char ** lines, State state, Registers regs, int credits);
 Scheduler * create_scheduler();
 Comm line_reader(FILE *file);
 BCP * load_program(FILE * bcp, int proc_number);
+int read_priority(int proc_num);

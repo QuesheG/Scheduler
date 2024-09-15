@@ -64,11 +64,24 @@ int main(void) {
         enqueue_ready(scheduler, process_node);
     }
 
-    while (true) { //main while
+    bool run = true;
+
+    while (run == true) { //main while
+        //Ler primeiro da fila de ready
+        //Ler do bcp desse processo o comando a ser executado
+
+        //Executar comando (💀) - Subtrair creditos tambem
+
+
+        //Atualiza a fila de bloqueados e os reinsere
+        update_blocked_queue();
+
+        //Escolhe proximo processo
+        //TODO: next_process();
         
+        //Pequenos ajustes de casos especificos descritos no ep
     }
     
-
 
 
     

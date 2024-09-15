@@ -7,7 +7,7 @@ O QUE PRECISA SER FEITO (ir avisando o que foi feito)
 
 - Ler Quantum (X)
 - Carregar processos;
-- Atribuir prioridades;
+- Atribuir prioridades; (X)
 - Implementar filas (X)
 	Ready; (X)
 	Blocked; (X)

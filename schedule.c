@@ -96,3 +96,31 @@ BCP * load_program(FILE * fil, int proc_number){
     }
     return bcp;
 }
+
+int read_priority(int proc_num) {
+    FILE *arq_prio = fopen("prioridades.txt", "r");
+    if (!arq_prio) {
+        printf("Error opening priority file\n");
+        return -1;
+    }
+
+    int priority = -1;
+    int line_counter = 0;  // Inicia a contagem de linhas em 0
+    char linha[100];  // Buffer para armazenar a linha
+
+    // Percorre o arquivo linha por linha
+    while (fgets(linha, sizeof(linha), arq_prio)) {
+        // Verifica se a linha atual é a que corresponde ao número do processo
+        if (line_counter == proc_num -1) {
+            if (sscanf(linha, "%d", &priority) != 1) {
+                printf("Error read priority\n");
+                priority = -1;
+            }
+            break;  // Sai do loop depois de encontrar e ler a linha correta
+        }
+        line_counter++;
+    }
+
+    fclose(arq_prio);
+    return priority;
+}

@@ -20,10 +20,11 @@ Node * create_node(int val){
 }
 
 bool enqueue_ready(Scheduler * scheduler, Node * new_node) { //true if okay
+    Queue * q = scheduler->ready_queue;
     if(!q) return false;
     if(!scheduler) return false;
 
-    Queue * q = scheduler->ready_queue;
+    
     if (is_empty(q)) {
         q->head = new_node;
         return true;
@@ -64,6 +65,7 @@ Node * dequeue_ready(Queue *q) {
 
 bool enqueue_blocked(Scheduler * scheduler, int val){
     Node * new_node = create_node(val);
+    Queue * q = scheduler->blocked_queue;
     Node * p = q->head;
     
     //Set the io timer in process

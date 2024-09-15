@@ -1,13 +1,13 @@
 #include "schedule.h"
 
 BCP * createBCP(State state, int credits){
-    //lines to be added in file_reading function;
     BCP * bcp = (BCP *)malloc(sizeof(BCP));
+    bcp->content = (BCP *)malloc(sizeof(char *) * 22);
     bcp->state = state;
     bcp->regs.X = 0;
     bcp->regs.Y = 0;
     bcp->regs.PC = 0;
-    bcp->credits = credits; //FIXME: esse aqui tem q mudar pq nem sei oq significa pra falar a real (luiyu reply)-> credits sao os creditos de prioridade a serem gastados
+    bcp->credits = credits;
     bcp->io_timer = 0;
     return bcp;
 }
@@ -25,16 +25,7 @@ Scheduler * create_scheduler(int quantum){
 }
 
 //parser para cada linha do arquivo texto recebido
-Comm line_reader(FILE *file) {  
-    //Eu (luiyu) pergunto-me se nao é melhor ler um file (programa) por vez e ja ir armazendando os comandos nos arrays
-    //Eu (quesheg) digo que n sei de porra nenhuma
-    Comm found = END;
-    char c[3] = {'A', 'A'};
-    char atrib1[2] = {'X', '='};
-    char atrib2[2] = {'Y', '='};
-    char exit[3] = {'S', 'A'};
-    char com[3] = {'C', 'O'};
-    char io[3] = {'E', '/'};
+Comm line_processer(BCP * bcp, int line) {
     /************************
     * FORMATO DOS COMANDOS: *
     * COM       -> COM      *
@@ -43,22 +34,32 @@ Comm line_reader(FILE *file) {
     * SAIDA     -> END      *
     * COMANDOS PODEM SER    *
     * IDENTIFICADOS COM     *
-    * APENAS 2 CARACTERES   *
+    * APENAS 1 CARACTERE    *
     ************************/
-    fread(c, sizeof(char), 2, file);
-    if(compare_res(c, com,  2)) return COM;
-    if(compare_res(c, io,   2)) return IO;
-    if(compare_res(c, atrib1, 2)) {
-        int val = read_val(file);
-        //TODO: armazenar valor recebido em X;
-        return ATRIB;
+    switch (bcp->content[line][0])
+    {
+        //TODO: códigos para comandos
+        case 'C':
+            //código para COMM, acho q só diminuir o quantum e pá
+            return COM;
+        case 'S':
+            //fechar processo
+            return END;
+        case 'E':
+            //Mudar processo para fila de entrada e saída (não sei se tem mais além disso)
+            return END;
+        case 'X':
+            //Atribuição para variável X
+            bcp->regs.X = atoi(bcp->content[line][2]);
+            return ATRIB;
+        case 'Y':
+            //Atribuição para variável Y
+            bcp->regs.Y = atoi(bcp->content[line][2]);
+            return ATRIB;
+        
+        default:
+            break;
     }
-    else if(compare_res(c, atrib2, 2)) {
-        int val = read_val(file);
-        //TODO: armazenar valor recebido em Y;
-        return ATRIB;
-    }
-    if(compare_res(c, exit, 2)) return END;
 
 }
 
@@ -74,16 +75,19 @@ BCP * load_program(FILE * fil, int proc_number){
     //load commands in bcp->address[]
     //set registers on 0
     //TODO: carregue programa da memória secundária para a memória sendo apontada pelo BCP
-    //FIXME: o ponteiro de arquivo provavelmente teria que ser passado já na segunda fila aqui,
-    //       devido a isso, tenhamos cuidado ou achemos um meio de consertar isso por favor;
+    //nota: as linhas "úteis" serão apenas de 1~n, com a linha 0 sendo usada para referenciar o nome do processo
     char * c = (char *)malloc(sizeof(char) * 25);
     BCP * bcp = createBCP(READY, 0);
     int i = 0;
     int pc = 0;
+    /*     
+    estou (quesheg) reescrevendo a string c a cada iteração para aproveitar o espaço
+    de c mantendo o ponteiro para a origem e usando o i para calcular o próximo char
+    */
     while(fread(c + i, sizeof(char), 1, fil)) {
         if(*(c + i) == '\n') {
             *(c + i) = '\0';
-            bcp->content = (char *)malloc(sizeof(char) * (i + 1));
+            bcp->content[pc] = (char *)malloc(sizeof(char) * (i + 1));
             cpystr(bcp->content[pc], c, i);
             i = 0;
             pc += 1;

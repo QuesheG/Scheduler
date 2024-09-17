@@ -45,5 +45,7 @@ typedef struct Scheduler{
 BCP * createBCP(char ** lines, State state, Registers regs, int credits);
 Scheduler * create_scheduler();
 Comm line_reader(FILE *file);
+Comm line_processer(BCP * bcp, int line);
+int get_process(Scheduler * s);
 BCP * load_program(FILE * bcp, int proc_number);
 int read_priority(int proc_num);

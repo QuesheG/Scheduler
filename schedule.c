@@ -25,7 +25,7 @@ Scheduler * create_scheduler(int quantum){
 }
 
 //parser para cada linha do arquivo texto recebido
-Comm line_processer(BCP * bcp, int line) {
+Comm line_processer(BCP * bcp) {
     /************************
     * FORMATO DOS COMANDOS: *
     * COM       -> COM      *
@@ -36,9 +36,10 @@ Comm line_processer(BCP * bcp, int line) {
     * IDENTIFICADOS COM     *
     * APENAS 1 CARACTERE    *
     ************************/
+
+    int line = bcp->regs.PC;
     switch (bcp->content[line][0])
     {
-        //TODO: códigos para comandos
         case 'C':
             //código para COMM, acho q só diminuir o quantum e pá
             return COM;
@@ -47,14 +48,14 @@ Comm line_processer(BCP * bcp, int line) {
             return END;
         case 'E':
             //Mudar processo para fila de entrada e saída (não sei se tem mais além disso)
-            return END;
+            return IO;
         case 'X':
             //Atribuição para variável X
-            bcp->regs.X = atoi(bcp->content[line][2]);
+            bcp->regs.X = atoi(&(bcp->content[line][2]));
             return ATRIB;
         case 'Y':
             //Atribuição para variável Y
-            bcp->regs.Y = atoi(bcp->content[line][2]);
+            bcp->regs.Y = atoi(&(bcp->content[line][2]));
             return ATRIB;
         
         default:
@@ -129,21 +130,27 @@ int read_priority(int proc_num) {
     return priority;
 }
 
+int get_process(Scheduler * s){
+    return s->ready_queue->head->val;
+}
+
+
 //return -1 if there is no process to run, 0 if the context isnt changed, 1 if context will be changed
 int next_process(Scheduler * s){
-    int actual_process = s->ready_queue->head->val;
-    int next_process = s->ready_queue->head->next->val;
-
-    if (!actual_process){ 
+    if (!s->ready_queue->head){ 
         return -1;
     }
-    if (!next_process){ 
+
+    if (!s->ready_queue->head->next){ 
         return 0;
     }
 
+    int actual_process = s->ready_queue->head->val;
+    int next_process = s->ready_queue->head->next->val;
+
+
     //if the actual credits are lower than the next credits, reenqueue the actual process
     if(s->table[actual_process]->credits < s->table[next_process]->credits){
-        enqueue_ready(s, dequeue(s->ready_queue));
         return 1;
     }
 

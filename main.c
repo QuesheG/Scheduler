@@ -52,14 +52,13 @@ int main(void) {
     //p* -> rodando
 
     //Carregar programas em memoria
+    //Talvez a gente tenha que transformar isso em uma funcao
     for (int i = 0; i < 10; i++) {
         //ler prios;
         int credit = read_priority(i);
         
         //carregar programas para memoria
         load_program(scheduler->table[i], i); //FIXME: atualmente essa linha ta dando uma string e pá, tem q mudar pra passar o arquivo e ir alocando o bcp na tabela
-        
-
 
         //load_process(i, scheduler); // (quesheg) acho q poderíamos fazer esse primeiro, pra aí já ir alocando os arquivos na ordem q precisa e criar a fila ordenadamente
         //log_function(); Dps da pra fazer isso no final //TODO: logs -_-
@@ -71,30 +70,54 @@ int main(void) {
     bool run = true;
 
     while (run) { //main while
-        //Ler primeiro da fila de ready
-        //Ler do bcp desse processo o comando a ser executado
+        //Read the first process in queue
+        int proc = get_process(scheduler);
+        BCP * bcp = scheduler->table[proc];
+        bcp->state = EXEC;
+        bcp->credits--;
 
-        //Executar comando (💀) - Subtrair creditos tambem
-
-
-        //Atualiza a fila de bloqueados e os reinsere
         update_blocked_queue(scheduler);
+
+        for (int i = 0; i < scheduler->quantum; i++) {
+            Comm command = line_processer(bcp);
+
+            if(command == END){
+                free(dequeue(scheduler->ready_queue)); //Removes from queue
+                free(scheduler->table[proc]); //Removes from table
+                break;
+            }else if(command == IO){
+                enqueue_blocked(scheduler, dequeue(scheduler->ready_queue)); //Removes from ready queue 
+                bcp->state = BLOCK;
+                bcp->regs.PC++;
+                break;
+            }
+
+            bcp->regs.PC++;
+        }
+        if(bcp->state != BLOCK){
+            bcp->state = READY;
+        }   
 
         //Escolhe proximo processo
         switch (next_process()) {
-        case -1:
+            case -1: //No processes to run
+                if(!scheduler->blocked_queue->head){
+                    //reload_all_processes();
+                }else{
+                    do {
+                        update_blocked_queue(scheduler);
+                    } while (next_process() != -1);
+                }               
+                break;
 
-            break;
-
-        case 0:
-
-            break;
-        
-        case 1:
-
-            break;
+            case 1: //Change the process
+                enqueue_ready(scheduler, dequeue(scheduler->ready_queue));
+                break;
+                
+            default: //Keep running the same process
+                break;
         }
-        
+
         //Pequenos ajustes de casos especificos descritos no ep
     }
     

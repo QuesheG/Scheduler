@@ -143,7 +143,7 @@ int next_process(Scheduler * s){
 
     //if the actual credits are lower than the next credits, reenqueue the actual process
     if(s->table[actual_process]->credits < s->table[next_process]->credits){
-        enqueue_ready(dequeue(s->ready_queue));
+        enqueue_ready(s, dequeue(s->ready_queue));
         return 1;
     }
 

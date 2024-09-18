@@ -1,9 +1,8 @@
 #include "schedule.h"
-#include "list_table.h"
 
 BCP * createBCP(State state, int credits){
     BCP * bcp = (BCP *)malloc(sizeof(BCP));
-    bcp->content = (BCP *)malloc(sizeof(char *) * 22);
+    bcp->content = (char **)malloc(sizeof(char *) * 22);
     bcp->state = state;
     bcp->regs.X = 0;
     bcp->regs.Y = 0;

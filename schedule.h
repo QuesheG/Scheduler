@@ -1,5 +1,4 @@
-#ifndef SCHEDULE_H
-#define SCHEDULE_H
+#include "list_table.h"
 
 // Forward declaration de structs que estão em list_table.h
 struct Node;
@@ -41,18 +40,17 @@ typedef struct bcp {
 
 typedef struct Scheduler {
     BCP ** table; // Array de ponteiros de BCP (tabela de processos)
-    struct Queue * ready_queue; // Agora referenciamos a Queue da list_table.h
-    struct Queue * blocked_queue;
+    Queue * ready_queue; // Agora referenciamos a Queue da list_table.h
+    Queue * blocked_queue;
     int io_time;
     int quantum;
 } Scheduler;
 
-BCP * createBCP(char ** lines, State state, Registers regs, int credits);
+BCP * createBCP(State state, int credits);
 Scheduler * create_scheduler(int quantum); // Alteração para aceitar o quantum como argumento
 Comm line_reader(FILE *file);
-Comm line_processer(BCP * bcp, int line);
+Comm line_processer(BCP * bcp);
 int get_process(Scheduler * s);
 BCP * load_program(FILE * bcp, int proc_number);
 int read_priority(int proc_num);
-
-#endif // SCHEDULE_H
+int next_process(Scheduler * s);

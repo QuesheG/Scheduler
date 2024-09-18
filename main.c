@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "list_table.h" 
 #include "schedule.h"
 
 int compare_res(char *a, char *b, size_t siz) {
@@ -89,7 +88,7 @@ int main(void) {
             Comm command = line_processer(bcp);
 
             if(command == END){
-                printf("%s terminado. X=%d Y=%d\n", bcp[0], bcp->regs.X, bcp->reg.Y); //TODO: APAGAR DEPOIS
+                printf("%s terminado. X=%d Y=%d\n", bcp[0], bcp->regs.X, bcp->regs.Y); //TODO: APAGAR DEPOIS
                 free(dequeue(scheduler->ready_queue)); //Removes from queue
                 free(scheduler->table[proc]); //Removes from table
                 break;

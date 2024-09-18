@@ -1,4 +1,3 @@
-#include "list_table.h"
 #include "schedule.h"
 
 bool is_empty(Queue *q){ //true if empty
@@ -20,7 +19,6 @@ Node * create_node(int val){
 }
 
 bool enqueue_ready(Scheduler * scheduler, Node * new_node) { //true if okay
-    Queue * q = scheduler->ready_queue;
     Queue * q = scheduler->ready_queue;
     if(!q) return false;
     if(!scheduler) return false;
@@ -65,7 +63,6 @@ Node * dequeue(Queue *q) {
 }
 
 bool enqueue_blocked(Scheduler * scheduler, Node * new_node){
-    Queue * q = scheduler->blocked_queue;
     Queue * q = scheduler->blocked_queue;
     Node * p = q->head;
     

@@ -57,7 +57,7 @@ int main(void) {
         char filename[50];  // Cria um buffer para armazenar o nome do arquivo
         sprintf(filename, "teste%d.txt", i);  // Gera o nome do arquivo
         FILE * file = fopen(filename, "r");
-
+        
         int credit = read_priority(i);
         
         //carregar programas para memoria
@@ -66,10 +66,10 @@ int main(void) {
         //load_process(i, scheduler); // (quesheg) acho q poderíamos fazer esse primeiro, pra aí já ir alocando os arquivos na ordem q precisa e criar a fila ordenadamente
         //log_function(); Dps da pra fazer isso no final //TODO: logs -_-
 
-        Node * process_node = create_node(credit);
+        Node * process_node = create_node(i);
         enqueue_ready(scheduler, process_node);
 
-        printf("Carregando %s\n", scheduler->table[i][0]); //TODO: APAGAR DEPOIS
+        printf("Carregando %s\n", scheduler->table[i]->content[0]); //TODO: APAGAR DEPOIS
     }
 
     bool run = true;
@@ -83,18 +83,19 @@ int main(void) {
 
         update_blocked_queue(scheduler);
 
-        printf("Executando %s", bcp[0]); //TODO: APAGAR DEPOIS
+        
         for (int i = 0; i < scheduler->quantum; i++) {
             Comm command = line_processer(bcp);
 
+            printf("Executando %s\n", bcp->content[bcp->regs.PC]); //TODO: APAGAR DEPOIS
             if(command == END){
-                printf("%s terminado. X=%d Y=%d\n", bcp[0], bcp->regs.X, bcp->regs.Y); //TODO: APAGAR DEPOIS
+                printf("%s terminado. X=%d Y=%d\n", bcp->content[0], bcp->regs.X, bcp->regs.Y); //TODO: APAGAR DEPOIS
                 free(dequeue(scheduler->ready_queue)); //Removes from queue
                 free(scheduler->table[proc]); //Removes from table
                 break;
             }else if(command == IO){
-                printf("E/S iniciada em %s\n", bcp[0]); //TODO: APAGAR DEPOIS
-                printf("Interrompendo %s apos %d instrucoes\n", bcp[0], i+1); //TODO: APAGAR DEPOIS
+                printf("E/S iniciada em %s\n", bcp->content[0]); //TODO: APAGAR DEPOIS
+                printf("Interrompendo %s apos %d instrucoes\n", bcp->content[0][0], i+1); //TODO: APAGAR DEPOIS
                 enqueue_blocked(scheduler, dequeue(scheduler->ready_queue)); //Removes from ready queue 
                 bcp->state = BLOCK;
                 bcp->regs.PC++;
@@ -106,7 +107,7 @@ int main(void) {
 
         if(bcp->state != BLOCK){
             bcp->state = READY;
-            printf("Interrompendo %s apos 2 instrucoes\n", bcp[0]); //TODO: APAGAR DEPOIS
+            printf("Interrompendo %s apos 2 instrucoes\n", bcp->content[0]); //TODO: APAGAR DEPOIS
         }   
 
         //Escolhe proximo processo
@@ -130,9 +131,9 @@ int main(void) {
                 break;
         }
 
-        printf("FIM");
+        
     }
-
+    printf("FIM");
     return 0;
 }
 

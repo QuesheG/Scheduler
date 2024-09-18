@@ -6,7 +6,7 @@ BCP * createBCP(State state, int credits){
     bcp->state = state;
     bcp->regs.X = 0;
     bcp->regs.Y = 0;
-    bcp->regs.PC = 0;
+    bcp->regs.PC = 1;
     bcp->credits = credits;
     bcp->io_timer = 0;
     return bcp;
@@ -92,7 +92,9 @@ BCP * load_program(FILE * fil, int proc_number){
             cpystr(bcp->content[pc], c, i);
             i = 0;
             pc += 1;
+            continue;
         }
+        i++;
     }
     if(i > 0) {
         *(c + i) = '\0';

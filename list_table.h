@@ -2,6 +2,17 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#ifndef LIST_TABLE_H
+#define LIST_TABLE_H
+
+// Forward declaration das structs e enums de schedule.h
+struct Scheduler;
+struct Registers;
+enum Comm;
+enum State;
+struct Process;
+struct BCP;
+
 typedef struct node {
     int val;
     struct node *next;
@@ -11,10 +22,12 @@ typedef struct q {
     Node *head;
 } Queue;
 
-Queue * create_queue(); //create and return a queue structure
-Node * create_node(int val); //create and return a node structure
-bool is_empty(Queue *q); //true if empty
-bool enqueue_ready(Scheduler * scheduler, Node * new_node); //true if okay, false if error
-bool enqueue_blocked(Scheduler * scheduler, Node * new_node); //true if okay, false if error
-Node* dequeue(Queue *q); //return the first node in queue and removes it from queue. return -1 if queue dont exist or is empty
-void update_blocked_queue(Scheduler * scheduler); //Updates the iotimer and re enqueues the processes
+Queue * create_queue(); //cria e retorna uma estrutura de fila
+Node * create_node(int val); //cria e retorna uma estrutura de nó
+bool is_empty(Queue *q); //retorna true se estiver vazio
+bool enqueue_ready(struct Scheduler * scheduler, Node * new_node); //true se OK, false se erro
+bool enqueue_blocked(struct Scheduler * scheduler, Node * new_node); //true se OK, false se erro
+Node* dequeue(Queue *q); //retorna o primeiro nó na fila e remove ele. Retorna -1 se fila não existir ou estiver vazia
+void update_blocked_queue(struct Scheduler * scheduler); //atualiza o iotimer e re-enfila os processos
+
+#endif // LIST_TABLE_H

@@ -1,9 +1,14 @@
-#include "list_table.h"
+#ifndef SCHEDULE_H
+#define SCHEDULE_H
 
-typedef struct reg {
+// Forward declaration de structs que estão em list_table.h
+struct Node;
+struct Queue;
+
+typedef struct registers {
     int X;
     int Y;
-    int PC; //int que guarda a posição 
+    int PC; // int que guarda a posição 
 } Registers;
 
 typedef enum comm {
@@ -11,7 +16,7 @@ typedef enum comm {
     COM,
     ATRIB,
     END
-} Comm; //FIXME: isso aqui alguma hora vai deixar de existir
+} Comm;
 
 typedef enum state {
     BLOCK,
@@ -27,25 +32,27 @@ typedef struct proc {
 } Process;
 
 typedef struct bcp {
-    char ** content; //máximo de umass 23 linha acho
+    char ** content; //máximo de umas 23 linhas
     State state;
-    Registers regs; //Transferi o PC para cá
+    Registers regs; // Transferi o PC para cá
     int credits;
-    int io_timer; //Transferindo iotimer para ca, nao sei se sera necessario aquela struct Process
+    int io_timer; // Transferi o iotimer para cá
 } BCP;
 
-typedef struct Scheduler{
-    BCP ** table; //Array de ponteiros de BCP (tabela de processos)
-    Queue * ready_queue;
-    Queue * blocked_queue;
+typedef struct Scheduler {
+    BCP ** table; // Array de ponteiros de BCP (tabela de processos)
+    struct Queue * ready_queue; // Agora referenciamos a Queue da list_table.h
+    struct Queue * blocked_queue;
     int io_time;
     int quantum;
 } Scheduler;
 
 BCP * createBCP(char ** lines, State state, Registers regs, int credits);
-Scheduler * create_scheduler();
+Scheduler * create_scheduler(int quantum); // Alteração para aceitar o quantum como argumento
 Comm line_reader(FILE *file);
 Comm line_processer(BCP * bcp, int line);
 int get_process(Scheduler * s);
 BCP * load_program(FILE * bcp, int proc_number);
 int read_priority(int proc_num);
+
+#endif // SCHEDULE_H

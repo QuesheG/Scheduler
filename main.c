@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "list_table.h"
+#include "list_table.h" 
 #include "schedule.h"
 
 int compare_res(char *a, char *b, size_t siz) {
@@ -53,18 +53,24 @@ int main(void) {
 
     //Carregar programas em memoria
     //Talvez a gente tenha que transformar isso em uma funcao
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 1; i++) {
         //ler prios;
+        char filename[50];  // Cria um buffer para armazenar o nome do arquivo
+        sprintf(filename, "teste%d.txt", i);  // Gera o nome do arquivo
+        FILE * file = fopen(filename, "r");
+
         int credit = read_priority(i);
         
         //carregar programas para memoria
-        load_program(scheduler->table[i], i); //FIXME: atualmente essa linha ta dando uma string e pá, tem q mudar pra passar o arquivo e ir alocando o bcp na tabela
+        scheduler->table[i] = load_program(file, i); //FIXME: atualmente essa linha ta dando uma string e pá, tem q mudar pra passar o arquivo e ir alocando o bcp na tabela
 
         //load_process(i, scheduler); // (quesheg) acho q poderíamos fazer esse primeiro, pra aí já ir alocando os arquivos na ordem q precisa e criar a fila ordenadamente
         //log_function(); Dps da pra fazer isso no final //TODO: logs -_-
 
         Node * process_node = create_node(credit);
         enqueue_ready(scheduler, process_node);
+
+        printf("Carregando %s\n", scheduler->table[i][0]); //TODO: APAGAR DEPOIS
     }
 
     bool run = true;
@@ -78,14 +84,18 @@ int main(void) {
 
         update_blocked_queue(scheduler);
 
+        printf("Executando %s", bcp[0]); //TODO: APAGAR DEPOIS
         for (int i = 0; i < scheduler->quantum; i++) {
             Comm command = line_processer(bcp);
 
             if(command == END){
+                printf("%s terminado. X=%d Y=%d\n", bcp[0], bcp->regs.X, bcp->reg.Y); //TODO: APAGAR DEPOIS
                 free(dequeue(scheduler->ready_queue)); //Removes from queue
                 free(scheduler->table[proc]); //Removes from table
                 break;
             }else if(command == IO){
+                printf("E/S iniciada em %s\n", bcp[0]); //TODO: APAGAR DEPOIS
+                printf("Interrompendo %s apos %d instrucoes\n", bcp[0], i+1); //TODO: APAGAR DEPOIS
                 enqueue_blocked(scheduler, dequeue(scheduler->ready_queue)); //Removes from ready queue 
                 bcp->state = BLOCK;
                 bcp->regs.PC++;
@@ -94,19 +104,22 @@ int main(void) {
 
             bcp->regs.PC++;
         }
+
         if(bcp->state != BLOCK){
             bcp->state = READY;
+            printf("Interrompendo %s apos 2 instrucoes\n", bcp[0]); //TODO: APAGAR DEPOIS
         }   
 
         //Escolhe proximo processo
-        switch (next_process()) {
+        switch (next_process(scheduler)) {
             case -1: //No processes to run
                 if(!scheduler->blocked_queue->head){
+                    run = false;
                     //reload_all_processes();
                 }else{
                     do {
                         update_blocked_queue(scheduler);
-                    } while (next_process() != -1);
+                    } while (next_process(scheduler) != -1);
                 }               
                 break;
 
@@ -118,12 +131,9 @@ int main(void) {
                 break;
         }
 
-        //Pequenos ajustes de casos especificos descritos no ep
+        printf("FIM");
     }
-    
 
-
-    
     return 0;
 }
 

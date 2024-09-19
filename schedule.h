@@ -51,6 +51,6 @@ Scheduler * create_scheduler(int quantum); // Alteração para aceitar o quantum
 Comm line_reader(FILE *file);
 Comm line_processer(BCP * bcp);
 int get_process(Scheduler * s);
-BCP * load_program(FILE * bcp, int proc_number);
+BCP * load_program(FILE * bcp, int proc_number, int credits);
 int read_priority(int proc_num);
 int next_process(Scheduler * s);

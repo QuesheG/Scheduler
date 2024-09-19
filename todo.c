@@ -6,7 +6,7 @@ O QUE PRECISA SER FEITO (ir avisando o que foi feito)
 	Perguntar sobre a prioridade estar "explicita" pro norton;
 
 - Ler Quantum (X)
-- Carregar processos;
+- Carregar processos; (X)
 - Atribuir prioridades; (X)
 - Implementar filas (X)
 	Ready; (X)
@@ -14,14 +14,14 @@ O QUE PRECISA SER FEITO (ir avisando o que foi feito)
 - Carregar nas filas; (X) (supostamente ja é para funcionar o carregamento)
 
 
-- Rodar n_com comandos;
+- Rodar n_com comandos; (X)
 	Atribuiçao
 	E/S (Enviar para bloqueados)
 	COM
 	SAIDA
 
 
-- Logfiles
+- Logfiles 
 
 - Testes
 - Relatorio

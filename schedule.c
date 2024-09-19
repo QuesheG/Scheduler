@@ -15,7 +15,7 @@ BCP * createBCP(State state, int credits){
 Scheduler * create_scheduler(int quantum){
     Scheduler *s = (Scheduler *)malloc(sizeof(Scheduler));
 
-    s->table = (BCP **)malloc(sizeof(BCP*) * 10);
+    s->table = (BCP **)malloc(sizeof(BCP*) * 11);
     s->blocked_queue = create_queue();
     s->ready_queue = create_queue();
     s->quantum = quantum;
@@ -71,14 +71,14 @@ void cpystr(char * dest, char * origin, int size) {
     }
 }
 
-BCP * load_program(FILE * fil, int proc_number){
+BCP * load_program(FILE * fil, int proc_number, int credits){
     //read from file
     //load commands in bcp->address[]
     //set registers on 0
     //TODO: carregue programa da memória secundária para a memória sendo apontada pelo BCP
     //nota: as linhas "úteis" serão apenas de 1~n, com a linha 0 sendo usada para referenciar o nome do processo
     char * c = (char *)malloc(sizeof(char) * 25);
-    BCP * bcp = createBCP(READY, 0);
+    BCP * bcp = createBCP(READY, credits);
     int i = 0;
     int pc = 0;
     /*     

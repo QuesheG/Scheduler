@@ -52,18 +52,17 @@ int main(void) {
 
     //Carregar programas em memoria
     //Talvez a gente tenha que transformar isso em uma funcao
-    for (int i = 0; i < 1; i++) {
+    for (int i = 1; i <= 10; i++) {
         //ler prios;
         char filename[50];  // Cria um buffer para armazenar o nome do arquivo
-        sprintf(filename, "teste%d.txt", i);  // Gera o nome do arquivo
+        sprintf(filename, "%d.txt", i);  // Gera o nome do arquivo
         FILE * file = fopen(filename, "r");
         
         int credit = read_priority(i);
         
         //carregar programas para memoria
-        scheduler->table[i] = load_program(file, i); //FIXME: atualmente essa linha ta dando uma string e pá, tem q mudar pra passar o arquivo e ir alocando o bcp na tabela
+        scheduler->table[i] = load_program(file, i, credit); //FIXME: atualmente essa linha ta dando uma string e pá, tem q mudar pra passar o arquivo e ir alocando o bcp na tabela
 
-        //load_process(i, scheduler); // (quesheg) acho q poderíamos fazer esse primeiro, pra aí já ir alocando os arquivos na ordem q precisa e criar a fila ordenadamente
         //log_function(); Dps da pra fazer isso no final //TODO: logs -_-
 
         Node * process_node = create_node(i);
@@ -71,6 +70,7 @@ int main(void) {
 
         printf("Carregando %s\n", scheduler->table[i]->content[0]); //TODO: APAGAR DEPOIS
     }
+
 
     bool run = true;
 
@@ -82,8 +82,7 @@ int main(void) {
         bcp->credits--;
 
         update_blocked_queue(scheduler);
-
-        
+        printf("Processo: %d\n", proc);
         for (int i = 0; i < scheduler->quantum; i++) {
             Comm command = line_processer(bcp);
 
@@ -95,7 +94,9 @@ int main(void) {
                 break;
             }else if(command == IO){
                 printf("E/S iniciada em %s\n", bcp->content[0]); //TODO: APAGAR DEPOIS
-                printf("Interrompendo %s apos %d instrucoes\n", bcp->content[0][0], i+1); //TODO: APAGAR DEPOIS
+                printf("Interrompendo %s apos %d instrucoes\n", bcp->content[0], i+1); //TODO: APAGAR DEPOIS
+                //printf("Processo a ser colocado na fila de bloqueados: %d\n",dequeue(scheduler->ready_queue)->val);
+
                 enqueue_blocked(scheduler, dequeue(scheduler->ready_queue)); //Removes from ready queue 
                 bcp->state = BLOCK;
                 bcp->regs.PC++;
@@ -111,6 +112,8 @@ int main(void) {
         }   
 
         //Escolhe proximo processo
+        int res = next_process(scheduler);
+        printf("Proximo processo: %d\n\n", res);
         switch (next_process(scheduler)) {
             case -1: //No processes to run
                 if(!scheduler->blocked_queue->head){
@@ -125,13 +128,22 @@ int main(void) {
 
             case 1: //Change the process
                 enqueue_ready(scheduler, dequeue(scheduler->ready_queue));
+                
                 break;
                 
             default: //Keep running the same process
+
                 break;
         }
-
-        
+        if(res){
+            Node * t = scheduler->blocked_queue->head;
+            printf("**Ordem na filinha de prontinhos: \n");
+            while (t) {
+                printf("%d ", t->val);
+                t = t->next;
+            }
+            printf("\n");
+        }
     }
     printf("FIM");
     return 0;

@@ -51,9 +51,9 @@ bool enqueue_ready(Scheduler * scheduler, Node * new_node) { //true if okay
     return true;
 }
 
-Node * dequeue(Queue *q) { 
-    if(!q->head) return NULL;
+Node * dequeue(Queue *q) {
     if(!q) return NULL;
+    if(!q->head) return NULL;
 
     Node * process = q->head;
     q->head = q->head->next;
@@ -77,20 +77,35 @@ bool enqueue_blocked(Scheduler * scheduler, Node * new_node){
         }
         p = p->next;
     }
+    q->head = new_node;
     return false;
 }
 
 void update_blocked_queue(Scheduler * scheduler){
     Queue * q = scheduler->blocked_queue;
+    if(!q) return;
+    if(!q->head) return;
+
     Node * p = q->head;
 
     while (p) {
         scheduler->table[p->val]->io_timer--; //decrease the io_timer
         if(scheduler->table[p->val]->io_timer == 0){
+            printf("Retorna processo %d para fila de prontos\n", p->val);
             scheduler->table[p->val]->state = READY;
             Node * process = dequeue(q);
+            Node * t = process;
             enqueue_ready(scheduler, process);
+            printf("Ordem na filinha de prontinhos: \n");
+            while (t) {
+                printf("%d ", t->val);
+                t = t->next;
+            }
+            printf("\n");
+            break;
         }
+
+        printf("Processo %d esta com %d tempo\n", p->val, scheduler->table[p->val]->io_timer);
         p = p->next;
     }
 }

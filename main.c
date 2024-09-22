@@ -71,7 +71,6 @@ int main(void) {
         printf("Carregando %s\n", scheduler->table[i]->content[0]); //TODO: APAGAR DEPOIS
     }
 
-
     bool run = true;
 
     while (run) { //main while
@@ -137,10 +136,7 @@ int main(void) {
         printf("Proximo processo: %d\n\n", res);
         switch (res) {
             case -1: //No processes to run
-                if(!scheduler->blocked_queue->head){
-                    run = false;
-                    //reload_all_processes();
-                }else{
+                if(scheduler->blocked_queue->head){
                     do {
                         update_blocked_queue(scheduler, true);
                     } while (next_process(scheduler) == -1);
@@ -154,8 +150,8 @@ int main(void) {
             default: //Keep running the same process
                 break;
         }
+        //TODO: reload_credits();
     }
-    printf("FIM");
     return 0;
 }
 

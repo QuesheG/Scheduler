@@ -8,7 +8,7 @@ BCP * createBCP(State state, int credits){
     bcp->regs.Y = 0;
     bcp->regs.PC = 1;
     bcp->credits = credits;
-    bcp->io_timer = 0;
+    bcp->io_timer = 2;
     return bcp;
 }
 
@@ -136,10 +136,9 @@ int get_process(Scheduler * s){
     return s->ready_queue->head->val;
 }
 
-
 //return -1 if there is no process to run, 0 if the context isnt changed, 1 if context will be changed
 int next_process(Scheduler * s){
-    if (!s->ready_queue->head){ 
+    if (!s->ready_queue->head){
         return -1;
     }
 
@@ -149,7 +148,6 @@ int next_process(Scheduler * s){
 
     int actual_process = s->ready_queue->head->val;
     int next_process = s->ready_queue->head->next->val;
-
 
     //if the actual credits are lower than the next credits, reenqueue the actual process
     if(s->table[actual_process]->credits < s->table[next_process]->credits){

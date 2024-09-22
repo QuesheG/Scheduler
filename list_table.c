@@ -31,9 +31,13 @@ bool enqueue_ready(Scheduler * scheduler, Node * new_node) { //true if okay
     
     Node * p = q->head;
     Node * last_node_visited = NULL; 
+    
     while(p){
+        int new = scheduler->table[new_node->val]->credits;
+        int current = scheduler->table[p->val]->credits;
+
         //if new_process' credits >= current_process add in position
-        if (scheduler->table[new_node->val]->credits >= scheduler->table[p->val]->credits) {
+        if (new >= current) {
             new_node->next = p;
             if(last_node_visited == NULL){
                 q->head = new_node;
@@ -46,8 +50,9 @@ bool enqueue_ready(Scheduler * scheduler, Node * new_node) { //true if okay
         last_node_visited = p;
         p = p->next;
     }
+
     //caso seja o ultimo da fila
-    p->next = new_node;
+    last_node_visited->next = new_node;
     return true;
 }
 
@@ -81,7 +86,7 @@ bool enqueue_blocked(Scheduler * scheduler, Node * new_node){
     return false;
 }
 
-void update_blocked_queue(Scheduler * scheduler){
+void update_blocked_queue(Scheduler * scheduler, bool update_last){
     Queue * q = scheduler->blocked_queue;
     if(!q) return;
     if(!q->head) return;
@@ -89,23 +94,25 @@ void update_blocked_queue(Scheduler * scheduler){
     Node * p = q->head;
 
     while (p) {
+        if(!update_last && !p->next){ //skips the last process
+            break;
+        }
+
         scheduler->table[p->val]->io_timer--; //decrease the io_timer
         if(scheduler->table[p->val]->io_timer == 0){
             printf("Retorna processo %d para fila de prontos\n", p->val);
             scheduler->table[p->val]->state = READY;
+            
             Node * process = dequeue(q);
-            Node * t = process;
             enqueue_ready(scheduler, process);
-            printf("Ordem na filinha de prontinhos: \n");
-            while (t) {
-                printf("%d ", t->val);
-                t = t->next;
-            }
+            
             printf("\n");
-            break;
+            p = q->head;
+            continue;
         }
 
         printf("Processo %d esta com %d tempo\n", p->val, scheduler->table[p->val]->io_timer);
         p = p->next;
     }
+    
 }

@@ -75,74 +75,84 @@ int main(void) {
     bool run = true;
 
     while (run) { //main while
+        Node * t = scheduler->ready_queue->head;
+        Node * b = scheduler->blocked_queue->head;
+        printf("Ordem na filinha de prontinhos: \n");
+        while (t) {
+            printf("%d(%d) ", t->val, scheduler->table[t->val]->credits);
+            t = t->next;
+        }
+        printf("\nOrdem na filinha de bloqueados: \n");
+        while (b) {
+            printf("%d(%d) ", b->val, scheduler->table[b->val]->io_timer);
+            b = b->next;
+        }
+        
+        printf("\n\n");
+
         //Read the first process in queue
         int proc = get_process(scheduler);
         BCP * bcp = scheduler->table[proc];
         bcp->state = EXEC;
         bcp->credits--;
 
-        update_blocked_queue(scheduler);
         printf("Processo: %d\n", proc);
+        Comm command;
         for (int i = 0; i < scheduler->quantum; i++) {
-            Comm command = line_processer(bcp);
-
+            command = line_processer(bcp);
+            
             printf("Executando %s\n", bcp->content[bcp->regs.PC]); //TODO: APAGAR DEPOIS
             if(command == END){
                 printf("%s terminado. X=%d Y=%d\n", bcp->content[0], bcp->regs.X, bcp->regs.Y); //TODO: APAGAR DEPOIS
                 free(dequeue(scheduler->ready_queue)); //Removes from queue
                 free(scheduler->table[proc]); //Removes from table
+                update_blocked_queue(scheduler, true);
                 break;
             }else if(command == IO){
                 printf("E/S iniciada em %s\n", bcp->content[0]); //TODO: APAGAR DEPOIS
                 printf("Interrompendo %s apos %d instrucoes\n", bcp->content[0], i+1); //TODO: APAGAR DEPOIS
-                //printf("Processo a ser colocado na fila de bloqueados: %d\n",dequeue(scheduler->ready_queue)->val);
 
-                enqueue_blocked(scheduler, dequeue(scheduler->ready_queue)); //Removes from ready queue 
                 bcp->state = BLOCK;
                 bcp->regs.PC++;
+                enqueue_blocked(scheduler, dequeue(scheduler->ready_queue)); //Removes from ready queue 
                 break;
             }
 
             bcp->regs.PC++;
         }
 
-        if(bcp->state != BLOCK){
-            bcp->state = READY;
-            printf("Interrompendo %s apos 2 instrucoes\n", bcp->content[0]); //TODO: APAGAR DEPOIS
-        }   
+        if(command != END){
+            enqueue_ready(scheduler, dequeue(scheduler->ready_queue)); //Reinsert in the
+            if(bcp->state != BLOCK){
+                bcp->state = READY;
+                printf("Interrompendo %s apos quantum instrucoes\n", bcp->content[0]); //TODO: APAGAR DEPOIS
+                update_blocked_queue(scheduler, true); 
+            } else{
+                update_blocked_queue(scheduler, false);
+            }
+        }
 
         //Escolhe proximo processo
         int res = next_process(scheduler);
         printf("Proximo processo: %d\n\n", res);
-        switch (next_process(scheduler)) {
+        switch (res) {
             case -1: //No processes to run
                 if(!scheduler->blocked_queue->head){
                     run = false;
                     //reload_all_processes();
                 }else{
                     do {
-                        update_blocked_queue(scheduler);
-                    } while (next_process(scheduler) != -1);
+                        update_blocked_queue(scheduler, true);
+                    } while (next_process(scheduler) == -1);
                 }               
                 break;
 
             case 1: //Change the process
                 enqueue_ready(scheduler, dequeue(scheduler->ready_queue));
-                
                 break;
                 
             default: //Keep running the same process
-
                 break;
-        }
-        if(res){
-            Node * t = scheduler->blocked_queue->head;
-            printf("**Ordem na filinha de prontinhos: \n");
-            while (t) {
-                printf("%d ", t->val);
-                t = t->next;
-            }
-            printf("\n");
         }
     }
     printf("FIM");

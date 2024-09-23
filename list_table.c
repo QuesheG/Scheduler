@@ -1,9 +1,5 @@
+#include "list_table.h"
 #include "schedule.h"
-
-bool is_empty(Queue *q){ //true if empty
-    if(!q->head) return true;
-    return false;
-}
 
 Queue * create_queue(){
     Queue * q = (Queue *)malloc(sizeof(Queue));
@@ -17,6 +13,12 @@ Node * create_node(int val){
     node->val = val;
     return node;
 }
+
+bool is_empty(Queue *q){ //true if empty
+    if(!q->head) return true;
+    return false;
+}
+
 
 bool enqueue_ready(Scheduler * scheduler, Node * new_node) { //true if okay
     Queue * q = scheduler->ready_queue;
@@ -56,17 +58,6 @@ bool enqueue_ready(Scheduler * scheduler, Node * new_node) { //true if okay
     return true;
 }
 
-Node * dequeue(Queue *q) {
-    if(!q) return NULL;
-    if(!q->head) return NULL;
-
-    Node * process = q->head;
-    q->head = q->head->next;
-    process->next = NULL;
-
-    return process;
-}
-
 bool enqueue_blocked(Scheduler * scheduler, Node * new_node){
     Queue * q = scheduler->blocked_queue;
     Node * p = q->head;
@@ -84,6 +75,17 @@ bool enqueue_blocked(Scheduler * scheduler, Node * new_node){
     }
     q->head = new_node;
     return false;
+}
+
+Node * dequeue(Queue *q) {
+    if(!q) return NULL;
+    if(!q->head) return NULL;
+
+    Node * process = q->head;
+    q->head = q->head->next;
+    process->next = NULL;
+
+    return process;
 }
 
 void update_blocked_queue(Scheduler * scheduler, bool update_last){
@@ -114,5 +116,4 @@ void update_blocked_queue(Scheduler * scheduler, bool update_last){
         printf("Processo %d esta com %d tempo\n", p->val, scheduler->table[p->val]->io_timer);
         p = p->next;
     }
-    
 }

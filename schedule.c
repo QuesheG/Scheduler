@@ -1,4 +1,6 @@
+#include <string.h>
 #include "schedule.h"
+#include "list_table.h"
 
 BCP * createBCP(State state, int credits){
     BCP * bcp = (BCP *)malloc(sizeof(BCP));
@@ -13,7 +15,7 @@ BCP * createBCP(State state, int credits){
 }
 
 Scheduler * create_scheduler(int quantum){
-    Scheduler *s = (Scheduler *)malloc(sizeof(Scheduler));
+    Scheduler * s = (Scheduler *)malloc(sizeof(Scheduler));
 
     s->table = (BCP **)malloc(sizeof(BCP*) * 11);
     s->blocked_queue = create_queue();
@@ -64,12 +66,12 @@ Comm line_processer(BCP * bcp) {
 
 }
 
-void cpystr(char * dest, char * origin, int size) {
-    if(!dest || !origin) return;
-    for(int i = 0; i < size; i++) {
-        dest[i] = origin[i]; //FIXME: essa aq é papo de pior função já feita dsclp
-    }
-}
+// void strncpy(char * dest, char * origin, int size) {
+//     if(!dest || !origin) return;
+//     for(int i = 0; i < size; i++) {
+//         dest[i] = origin[i]; //FIXME: essa aq é papo de pior função já feita dsclp
+//     }
+// }
 
 BCP * load_program(FILE * fil, int proc_number, int credits){
     //read from file
@@ -89,7 +91,7 @@ BCP * load_program(FILE * fil, int proc_number, int credits){
         if(*(c + i) == '\n') {
             *(c + i) = '\0';
             bcp->content[pc] = (char *)malloc(sizeof(char) * (i + 1));
-            cpystr(bcp->content[pc], c, i);
+            strncpy(bcp->content[pc], c, i);
             i = 0;
             pc += 1;
             continue;
@@ -99,13 +101,13 @@ BCP * load_program(FILE * fil, int proc_number, int credits){
     if(i > 0) {
         *(c + i) = '\0';
         bcp->content[pc] = (char *)malloc(sizeof(char) * (i + 1));
-        cpystr(bcp->content[pc], c, i);
+        strncpy(bcp->content[pc], c, i);
     }
     return bcp;
 }
 
 int read_priority(int proc_num) {
-    FILE *arq_prio = fopen("prioridades.txt", "r");
+    FILE *arq_prio = fopen("programas/prioridades.txt", "r"); //FIXME: isso devia estar hardcoded aqui?
     if (!arq_prio) {
         printf("Error opening priority file\n");
         return -1;
@@ -132,27 +134,51 @@ int read_priority(int proc_num) {
     return priority;
 }
 
-int get_process(Scheduler * s){
-    return s->ready_queue->head->val;
+int get_process(Scheduler * scheduler){
+    return scheduler->ready_queue->head->val;
 }
 
 //return -1 if there is no process to run, 0 if the context isnt changed, 1 if context will be changed
-int next_process(Scheduler * s){
-    if (!s->ready_queue->head){
+int next_process(Scheduler * scheduler){
+    if (!scheduler->ready_queue->head){
         return -1;
     }
 
-    if (!s->ready_queue->head->next){ 
+    if (!scheduler->ready_queue->head->next){ 
         return 0;
     }
 
-    int actual_process = s->ready_queue->head->val;
-    int next_process = s->ready_queue->head->next->val;
+    int actual_process = scheduler->ready_queue->head->val;
+    int next_process = scheduler->ready_queue->head->next->val;
 
     //if the actual credits are lower than the next credits, reenqueue the actual process
-    if(s->table[actual_process]->credits < s->table[next_process]->credits){
+    if(scheduler->table[actual_process]->credits < scheduler->table[next_process]->credits){
         return 1;
     }
 
     return 0;
+}
+
+bool load_all(Scheduler * scheduler) {
+    for (int i = 1; i <= 10; i++) { //TODO: one based :vomiting_face:
+        char filename[32];  // Cria um buffer para armazenar o nome do arquivo
+
+        //FIXME: pelo exemplo dado via Norton Broadcasting Systems, os arquivos serão passados com dois algarismos (01~11)
+        //checar uso de strtol ou %02d;
+        sprintf(filename, "programas/%02d.txt", i);  // Gera o nome do arquivo
+        FILE * file = fopen(filename, "r");
+
+        if(!file) return false;
+        
+        int credit = read_priority(i);
+        
+        //carregar programas para memoria
+        scheduler->table[i] = load_program(file, i, credit);
+
+        Node * process_node = create_node(i);
+        enqueue_ready(scheduler, process_node);
+
+        printf("Carregando %s\n", scheduler->table[i]->content[0]); //TODO: APAGAR DEPOIS
+    }
+    return true;
 }

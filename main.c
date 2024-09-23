@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "list_table.h"
 #include "schedule.h"
+
+//TODO: RETIRAR PRINTFS E FAZER LOGS:
+//pode usar ctrl+f para avaliar todos os printfs
+//usar TODO e FIXME para avaliar necessidades
 
 int compare_res(char *a, char *b, size_t siz) {
     int res = 0;
@@ -29,7 +34,7 @@ int read_val(FILE *file) {
 
 int main(void) {
     //checa quantum
-    FILE *q = fopen("quantum.txt", "r");
+    FILE *q = fopen("programas/quantum.txt", "r");
     if(!q) {
         printf("Could not read quantum value\n");
         printf("Quantum should be specified in quantum.txt\n");
@@ -46,48 +51,30 @@ int main(void) {
         return 0;
     }
 
-    //q1 -> prontos
-    //q2 -> blocked
-    //p* -> rodando
+    // char logfilename[32];
+    // sprintf(logfilename, "log%02d.txt", scheduler->quantum);
+    // FILE *log = fopen(logfilename, "w");
 
     //Carregar programas em memoria
-    //Talvez a gente tenha que transformar isso em uma funcao
-    for (int i = 1; i <= 10; i++) {
-        //ler prios;
-        char filename[50];  // Cria um buffer para armazenar o nome do arquivo
-        sprintf(filename, "%d.txt", i);  // Gera o nome do arquivo
-        FILE * file = fopen(filename, "r");
-        
-        int credit = read_priority(i);
-        
-        //carregar programas para memoria
-        scheduler->table[i] = load_program(file, i, credit); //FIXME: atualmente essa linha ta dando uma string e pá, tem q mudar pra passar o arquivo e ir alocando o bcp na tabela
-
-        //log_function(); Dps da pra fazer isso no final //TODO: logs -_-
-
-        Node * process_node = create_node(i);
-        enqueue_ready(scheduler, process_node);
-
-        printf("Carregando %s\n", scheduler->table[i]->content[0]); //TODO: APAGAR DEPOIS
-    }
+    load_all(scheduler);
 
     bool run = true;
 
     while (run) { //main while
         Node * t = scheduler->ready_queue->head;
         Node * b = scheduler->blocked_queue->head;
-        printf("Ordem na filinha de prontinhos: \n");
+        printf("Ordem na filinha de prontinhos: \n"); //FIXME: ISSO NÃO PODE PASSAR!
         while (t) {
-            printf("%d(%d) ", t->val, scheduler->table[t->val]->credits);
+            printf("%d(%d) ", t->val, scheduler->table[t->val]->credits);//TODO: APAGAR DEPOIS
             t = t->next;
         }
-        printf("\nOrdem na filinha de bloqueados: \n");
+        printf("\nOrdem na filinha de bloqueados: \n"); //FIXME: NEM ISSO!
         while (b) {
-            printf("%d(%d) ", b->val, scheduler->table[b->val]->io_timer);
+            printf("%d(%d) ", b->val, scheduler->table[b->val]->io_timer); //TODO: APAGAR DEPOIS
             b = b->next;
         }
         
-        printf("\n\n");
+        printf("\n\n"); //TODO: APAGAR DEPOIS
 
         //Read the first process in queue
         int proc = get_process(scheduler);
@@ -110,6 +97,7 @@ int main(void) {
             }else if(command == IO){
                 printf("E/S iniciada em %s\n", bcp->content[0]); //TODO: APAGAR DEPOIS
                 printf("Interrompendo %s apos %d instrucoes\n", bcp->content[0], i+1); //TODO: APAGAR DEPOIS
+                //^ log files precisam incluir também número médio de trocas
 
                 bcp->state = BLOCK;
                 bcp->regs.PC++;
@@ -121,7 +109,7 @@ int main(void) {
         }
 
         if(command != END){
-            enqueue_ready(scheduler, dequeue(scheduler->ready_queue)); //Reinsert in the
+            enqueue_ready(scheduler, dequeue(scheduler->ready_queue)); //Reinsert in the ready queue
             if(bcp->state != BLOCK){
                 bcp->state = READY;
                 printf("Interrompendo %s apos quantum instrucoes\n", bcp->content[0]); //TODO: APAGAR DEPOIS
@@ -133,7 +121,7 @@ int main(void) {
 
         //Escolhe proximo processo
         int res = next_process(scheduler);
-        printf("Proximo processo: %d\n\n", res);
+        printf("Proximo processo: %d\n\n", res); //TODO: APAGAR DEPOIS
         switch (res) {
             case -1: //No processes to run
                 if(scheduler->blocked_queue->head){
@@ -150,8 +138,11 @@ int main(void) {
             default: //Keep running the same process
                 break;
         }
-        //TODO: reload_credits();
+        //TODO: reload_credits(); pq?
     }
+    // fwrite("MEDIA DE TROCAS: %D\n", 0, 0, log);
+    // fwrite("MEDIA DE INSTRUÇÕES: %D\n", 0, 0, log);
+    // fwrite("QUANTUM: %D\n", 0, 0, log);
     return 0;
 }
 

@@ -1,13 +1,14 @@
-#include "list_table.h"
-
-// Forward declaration de structs que estão em list_table.h
-struct Node;
-struct Queue;
+#ifndef SCHEDULE_H
+#define SCHEDULE_H
+#include <stdbool.h>
+#include <stdio.h>
+// #include "list_table.h"
+typedef struct q Queue;
 
 typedef struct registers {
     int X;
     int Y;
-    int PC; // int que guarda a posição 
+    int PC;
 } Registers;
 
 typedef enum comm {
@@ -31,16 +32,16 @@ typedef struct proc {
 } Process;
 
 typedef struct bcp {
-    char ** content; //máximo de umas 23 linhas
+    char ** content;
     State state;
-    Registers regs; // Transferi o PC para cá
+    Registers regs;
     int credits;
-    int io_timer; // Transferi o iotimer para cá
+    int io_timer;
 } BCP;
 
 typedef struct Scheduler {
-    BCP ** table; // Array de ponteiros de BCP (tabela de processos)
-    Queue * ready_queue; // Agora referenciamos a Queue da list_table.h
+    BCP ** table; //Array de ponteiros de BCP (tabela de processos)
+    Queue * ready_queue; //Referenciamos a Queue da list_table.h
     Queue * blocked_queue;
     int io_time;
     int quantum;
@@ -48,9 +49,13 @@ typedef struct Scheduler {
 
 BCP * createBCP(State state, int credits);
 Scheduler * create_scheduler(int quantum); // Alteração para aceitar o quantum como argumento
-Comm line_reader(FILE *file);
 Comm line_processer(BCP * bcp);
-int get_process(Scheduler * s);
+// void strncpy(char * dest, char * origin, int size);
+int get_process(Scheduler * scheduler);
 BCP * load_program(FILE * bcp, int proc_number, int credits);
 int read_priority(int proc_num);
-int next_process(Scheduler * s);
+int get_process(Scheduler * scheduler);
+int next_process(Scheduler * scheduler);
+bool load_all(Scheduler * scheduler);
+
+#endif

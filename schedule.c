@@ -66,18 +66,7 @@ Comm line_processer(BCP * bcp) {
 
 }
 
-// void strncpy(char * dest, char * origin, int size) {
-//     if(!dest || !origin) return;
-//     for(int i = 0; i < size; i++) {
-//         dest[i] = origin[i]; //FIXME: essa aq é papo de pior função já feita dsclp
-//     }
-// }
-
-BCP * load_program(FILE * fil, int proc_number, int credits){
-    //read from file
-    //load commands in bcp->address[]
-    //set registers on 0
-    //TODO: carregue programa da memória secundária para a memória sendo apontada pelo BCP
+BCP * load_program(FILE * file, int credits){
     //nota: as linhas "úteis" serão apenas de 1~n, com a linha 0 sendo usada para referenciar o nome do processo
     char * c = (char *)malloc(sizeof(char) * 25);
     BCP * bcp = createBCP(READY, credits);
@@ -87,7 +76,7 @@ BCP * load_program(FILE * fil, int proc_number, int credits){
     estou (quesheg) reescrevendo a string c a cada iteração para aproveitar o espaço
     de c mantendo o ponteiro para a origem e usando o i para calcular o próximo char
     */
-    while(fread(c + i, sizeof(char), 1, fil)) {
+    while(fread(c + i, sizeof(char), 1, file)) {
         if(*(c + i) == '\n') {
             *(c + i) = '\0';
             bcp->content[pc] = (char *)malloc(sizeof(char) * (i + 1));
@@ -103,11 +92,12 @@ BCP * load_program(FILE * fil, int proc_number, int credits){
         bcp->content[pc] = (char *)malloc(sizeof(char) * (i + 1));
         strncpy(bcp->content[pc], c, i);
     }
+    free(c);
     return bcp;
 }
 
 int read_priority(int proc_num) {
-    FILE *arq_prio = fopen("programas/prioridades.txt", "r"); //FIXME: isso devia estar hardcoded aqui?
+    FILE *arq_prio = fopen("programas/prioridades.txt", "r");
     if (!arq_prio) {
         printf("Error opening priority file\n");
         return -1;
@@ -120,7 +110,7 @@ int read_priority(int proc_num) {
     // Percorre o arquivo linha por linha
     while (fgets(linha, sizeof(linha), arq_prio)) {
         // Verifica se a linha atual é a que corresponde ao número do processo
-        if (line_counter == proc_num -1) {
+        if (line_counter == proc_num - 1) {
             if (sscanf(linha, "%d", &priority) != 1) {
                 printf("Error read priority\n");
                 priority = -1;
@@ -159,12 +149,9 @@ int next_process(Scheduler * scheduler){
     return 0;
 }
 
-bool load_all(Scheduler * scheduler) {
-    for (int i = 1; i <= 10; i++) { //TODO: one based :vomiting_face:
+bool load_all(Scheduler * scheduler, FILE * log) {
+    for (int i = 1; i <= 10; i++) {
         char filename[32];  // Cria um buffer para armazenar o nome do arquivo
-
-        //FIXME: pelo exemplo dado via Norton Broadcasting Systems, os arquivos serão passados com dois algarismos (01~11)
-        //checar uso de strtol ou %02d;
         sprintf(filename, "programas/%02d.txt", i);  // Gera o nome do arquivo
         FILE * file = fopen(filename, "r");
 
@@ -173,12 +160,12 @@ bool load_all(Scheduler * scheduler) {
         int credit = read_priority(i);
         
         //carregar programas para memoria
-        scheduler->table[i] = load_program(file, i, credit);
+        scheduler->table[i] = load_program(file, credit);
 
         Node * process_node = create_node(i);
         enqueue_ready(scheduler, process_node);
 
-        printf("Carregando %s\n", scheduler->table[i]->content[0]); //TODO: APAGAR DEPOIS
+        fprintf(log, "Carregando %s\n", scheduler->table[i]->content[0]);
     }
     return true;
 }

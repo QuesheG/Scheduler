@@ -52,10 +52,10 @@ Scheduler * create_scheduler(int quantum); // Alteração para aceitar o quantum
 Comm line_processer(BCP * bcp);
 // void strncpy(char * dest, char * origin, int size);
 int get_process(Scheduler * scheduler);
-BCP * load_program(FILE * bcp, int proc_number, int credits);
+BCP * load_program(FILE * bcp, int credits);
 int read_priority(int proc_num);
 int get_process(Scheduler * scheduler);
 int next_process(Scheduler * scheduler);
-bool load_all(Scheduler * scheduler);
+bool load_all(Scheduler * scheduler, FILE * log);
 
 #endif

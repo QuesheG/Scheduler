@@ -1,0 +1,636 @@
+Carregando TESTE-1
+Carregando TESTE-2
+Carregando TESTE-3oú{™„
+Carregando TESTE-4
+Carregando TESTE-5
+Carregando TESTE-6
+Carregando TESTE-7
+Carregando TESTE-8
+Carregando TESTE-9
+Carregando TESTE-10ØÙÚÛÜÝÞŸÖ–Çs>
+
+Ordem na filinha de prontinhos: 
+7(12) 4(10) 9(8) 8(8) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 7
+Executando X=8
+Executando COM
+Executando COM
+Interrompendo TESTE-7 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+7(11) 4(10) 9(8) 8(8) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 7
+Executando E/S
+E/S iniciada em TESTE-7
+Interrompendo TESTE-7 apos 1 instrucoes
+
+Ordem na filinha de prontinhos: 
+4(10) 9(8) 8(8) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+7(2) 
+
+Processo: 4
+Executando X=8
+Executando E/S
+E/S iniciada em TESTE-4
+Interrompendo TESTE-4 apos 2 instrucoes
+
+Ordem na filinha de prontinhos: 
+9(8) 8(8) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+7(1) 4(2) 
+
+Processo: 9
+Executando COM
+Executando COM
+Executando E/S
+E/S iniciada em TESTE-9
+Interrompendo TESTE-9 apos 3 instrucoes
+
+Ordem na filinha de prontinhos: 
+7(10) 8(8) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+4(1) 9(2) 
+
+Processo: 7
+Executando Y=5
+Executando COM
+Executando X=10
+Interrompendo TESTE-7 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+4(9) 7(9) 8(8) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+9(1) 
+
+Processo: 4
+Executando COM
+Executando E/S
+E/S iniciada em TESTE-4
+Interrompendo TESTE-4 apos 2 instrucoes
+
+Ordem na filinha de prontinhos: 
+7(9) 8(8) 9(7) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+4(2) 
+
+Processo: 7
+Executando X=12
+Executando Y=3
+Executando COM
+Interrompendo TESTE-7 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+7(8) 8(8) 9(7) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+4(1) 
+
+Processo: 7
+Executando COM
+Executando COM
+Executando E/S
+E/S iniciada em TESTE-7
+Interrompendo TESTE-7 apos 3 instrucoes
+
+Ordem na filinha de prontinhos: 
+4(8) 8(8) 9(7) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+7(2) 
+
+Processo: 4
+Executando Y=5
+Executando E/S
+E/S iniciada em TESTE-4
+Interrompendo TESTE-4 apos 2 instrucoes
+
+Ordem na filinha de prontinhos: 
+8(8) 9(7) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+7(1) 4(2) 
+
+Processo: 8
+Executando X=8
+Executando COM
+Executando COM
+Interrompendo TESTE-8 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+7(7) 8(7) 9(7) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+4(1) 
+
+Processo: 7
+Executando SAIDA
+TESTE-7 terminado. X=12 Y=3
+
+Ordem na filinha de prontinhos: 
+4(7) 8(7) 9(7) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 4
+Executando COM
+Executando E/S
+E/S iniciada em TESTE-4
+Interrompendo TESTE-4 apos 2 instrucoes
+
+Ordem na filinha de prontinhos: 
+8(7) 9(7) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+4(2) 
+
+Processo: 8
+Executando Y=5
+Executando COM
+Executando X=10
+Interrompendo TESTE-8 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+9(7) 8(6) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+4(1) 
+
+Processo: 9
+Executando COM
+Executando COM
+Executando COM
+Interrompendo TESTE-9 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+4(6) 9(6) 8(6) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 4
+Executando X=3
+Executando X=91
+Executando E/S
+E/S iniciada em TESTE-4
+Interrompendo TESTE-4 apos 3 instrucoes
+
+Ordem na filinha de prontinhos: 
+9(6) 8(6) 6(6) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+4(2) 
+
+Processo: 9
+Executando COM
+Executando COM
+Executando COM
+Interrompendo TESTE-9 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+8(6) 6(6) 9(5) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+4(1) 
+
+Processo: 8
+Executando X=12
+Executando Y=3
+Executando COM
+Interrompendo TESTE-8 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+6(6) 4(5) 8(5) 9(5) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 6
+Executando X=8
+Executando COM
+Executando COM
+Interrompendo TESTE-6 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+6(5) 4(5) 8(5) 9(5) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 6
+Executando E/S
+E/S iniciada em TESTE-6
+Interrompendo TESTE-6 apos 1 instrucoes
+
+Ordem na filinha de prontinhos: 
+4(5) 8(5) 9(5) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+6(2) 
+
+Processo: 4
+Executando SAIDA
+TESTE-4 terminado. X=91 Y=5
+
+Ordem na filinha de prontinhos: 
+8(5) 9(5) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+6(1) 
+
+Processo: 8
+Executando COM
+Executando COM
+Executando COM
+Interrompendo TESTE-8 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+9(5) 6(4) 8(4) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 9
+Executando COM
+Executando COM
+Executando COM
+Interrompendo TESTE-9 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+9(4) 6(4) 8(4) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 9
+Executando COM
+Executando E/S
+E/S iniciada em TESTE-9
+Interrompendo TESTE-9 apos 2 instrucoes
+
+Ordem na filinha de prontinhos: 
+6(4) 8(4) 10(4) 5(4) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+9(2) 
+
+Processo: 6
+Executando Y=5
+Executando COM
+Executando COM
+Interrompendo TESTE-6 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+8(4) 10(4) 5(4) 6(3) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+9(1) 
+
+Processo: 8
+Executando COM
+Executando COM
+Executando COM
+Interrompendo TESTE-8 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+10(4) 5(4) 9(3) 8(3) 6(3) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 10
+Executando COM
+Executando COM
+Executando COM
+Interrompendo TESTE-10ØÙÚÛÜÝÞŸÖ–Çs> apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+5(4) 10(3) 9(3) 8(3) 6(3) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 5
+Executando X=8
+Executando E/S
+E/S iniciada em TESTE-5
+Interrompendo TESTE-5 apos 2 instrucoes
+
+Ordem na filinha de prontinhos: 
+10(3) 9(3) 8(3) 6(3) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+5(2) 
+
+Processo: 10
+Executando COM
+Executando E/S
+E/S iniciada em TESTE-10ØÙÚÛÜÝÞŸÖ–Çs>
+Interrompendo TESTE-10ØÙÚÛÜÝÞŸÖ–Çs> apos 2 instrucoes
+
+Ordem na filinha de prontinhos: 
+9(3) 8(3) 6(3) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+5(1) 10(2) 
+
+Processo: 9
+Executando SAIDA
+TESTE-9 terminado. X=0 Y=0
+
+Ordem na filinha de prontinhos: 
+5(3) 8(3) 6(3) 2(3) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+10(1) 
+
+Processo: 5
+Executando COM
+Executando E/S
+E/S iniciada em TESTE-5
+Interrompendo TESTE-5 apos 2 instrucoes
+
+Ordem na filinha de prontinhos: 
+8(3) 6(3) 2(3) 10(2) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+5(2) 
+
+Processo: 8
+Executando COM
+Executando COM
+Executando COM
+Interrompendo TESTE-8 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+6(3) 2(3) 8(2) 10(2) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+5(1) 
+
+Processo: 6
+Executando COM
+Executando COM
+Executando COM
+Interrompendo TESTE-6 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+2(3) 5(2) 6(2) 8(2) 10(2) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 2
+Executando X=8
+Executando COMúm™
+Executando COMúc™
+Interrompendo TESTE-2 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+2(2) 5(2) 6(2) 8(2) 10(2) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 2
+Executando COMiúu™
+Executando E/Skúw™
+E/S iniciada em TESTE-2
+Interrompendo TESTE-2 apos 2 instrucoes
+
+Ordem na filinha de prontinhos: 
+5(2) 6(2) 8(2) 10(2) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+2(2) 
+
+Processo: 5
+Executando Y=5
+Executando E/S
+E/S iniciada em TESTE-5
+Interrompendo TESTE-5 apos 2 instrucoes
+
+Ordem na filinha de prontinhos: 
+6(2) 8(2) 10(2) 3(2) 1(1) 
+Ordem na filinha de bloqueados: 
+2(1) 5(2) 
+
+Processo: 6
+Executando E/S
+E/S iniciada em TESTE-6
+Interrompendo TESTE-6 apos 1 instrucoes
+
+Ordem na filinha de prontinhos: 
+8(2) 10(2) 3(2) 2(1) 1(1) 
+Ordem na filinha de bloqueados: 
+5(1) 6(2) 
+
+Processo: 8
+Executando COM
+Executando X=1
+Executando SAIDA
+TESTE-8 terminado. X=1 Y=3
+
+Ordem na filinha de prontinhos: 
+10(2) 3(2) 5(1) 2(1) 1(1) 
+Ordem na filinha de bloqueados: 
+6(1) 
+
+Processo: 10
+Executando SAIDA
+TESTE-10ØÙÚÛÜÝÞŸÖ–Çs> terminado. X=0 Y=0
+
+Ordem na filinha de prontinhos: 
+3(2) 6(1) 5(1) 2(1) 1(1) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 3
+Executando X=8ús™
+Executando COMú]™
+Executando COMúY™
+Interrompendo TESTE-3oú{™„ apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+3(1) 6(1) 5(1) 2(1) 1(1) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 3
+Executando COM	úU™
+Executando Y=55úQ™
+Executando X=21úM™
+Interrompendo TESTE-3oú{™„ apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+6(1) 5(1) 2(1) 1(1) 3(0) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 6
+Executando COM
+Executando COM
+Executando E/S
+E/S iniciada em TESTE-6
+Interrompendo TESTE-6 apos 3 instrucoes
+
+Ordem na filinha de prontinhos: 
+5(1) 2(1) 1(1) 3(0) 
+Ordem na filinha de bloqueados: 
+6(2) 
+
+Processo: 5
+Executando COM
+Executando E/S
+E/S iniciada em TESTE-5
+Interrompendo TESTE-5 apos 2 instrucoes
+
+Ordem na filinha de prontinhos: 
+2(1) 1(1) 3(0) 
+Ordem na filinha de bloqueados: 
+6(1) 5(2) 
+
+Processo: 2
+Executando Y=10œžÿ'úC™¤
+Executando X=2úq™
+Executando COM?úK™
+Interrompendo TESTE-2 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+1(1) 6(0) 2(0) 3(0) 
+Ordem na filinha de bloqueados: 
+5(1) 
+
+Processo: 1
+Executando X=8
+Executando COM
+Executando COM
+Interrompendo TESTE-1 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+5(0) 1(0) 6(0) 2(0) 3(0) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 5
+Executando COM
+Executando E/S
+E/S iniciada em TESTE-5
+Interrompendo TESTE-5 apos 2 instrucoes
+
+Ordem na filinha de prontinhos: 
+1(0) 6(0) 2(0) 3(0) 
+Ordem na filinha de bloqueados: 
+5(2) 
+
+Processo: 1
+Executando COM
+Executando E/S
+E/S iniciada em TESTE-1
+Interrompendo TESTE-1 apos 2 instrucoes
+
+Ordem na filinha de prontinhos: 
+6(0) 2(0) 3(0) 
+Ordem na filinha de bloqueados: 
+5(1) 1(2) 
+
+Processo: 6
+Executando SAIDA
+TESTE-6 terminado. X=8 Y=5
+
+Ordem na filinha de prontinhos: 
+2(0) 3(0) 5(-1) 
+Ordem na filinha de bloqueados: 
+1(1) 
+
+Processo: 2
+Executando COMúW™
+Executando E/S«¬­®¯Ñ—Á1>
+E/S iniciada em TESTE-2
+Interrompendo TESTE-2 apos 2 instrucoes
+
+Ordem na filinha de prontinhos: 
+3(0) 1(-1) 5(-1) 
+Ordem na filinha de bloqueados: 
+2(2) 
+
+Processo: 3
+Executando COM3úO™
+Executando COM=úI™
+Executando X=3
+Interrompendo TESTE-3oú{™„ apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+3(-1) 1(-1) 5(-1) 
+Ordem na filinha de bloqueados: 
+2(1) 
+
+Processo: 3
+Executando X=91
+Executando Y=10
+Executando COM
+Interrompendo TESTE-3oú{™„ apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+2(-1) 1(-1) 5(-1) 3(-2) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 2
+Executando COM7úS™
+Executando COM9úE™
+Executando COMúk™	
+Interrompendo TESTE-2 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+1(-1) 5(-1) 2(-2) 3(-2) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 1
+Executando Y=10À
+Executando X=2
+Executando COM
+Interrompendo TESTE-1 apos 03 instrucoes
+
+Ordem na filinha de prontinhos: 
+5(-1) 1(-2) 2(-2) 3(-2) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 5
+Executando SAIDA
+TESTE-5 terminado. X=8 Y=5
+
+Ordem na filinha de prontinhos: 
+1(-2) 2(-2) 3(-2) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 1
+Executando E/S
+E/S iniciada em TESTE-1
+Interrompendo TESTE-1 apos 1 instrucoes
+
+Ordem na filinha de prontinhos: 
+2(-2) 3(-2) 
+Ordem na filinha de bloqueados: 
+1(2) 
+
+Processo: 2
+Executando COM‚‚úo™‚
+Executando E/Súi™
+E/S iniciada em TESTE-2
+Interrompendo TESTE-2 apos 2 instrucoes
+
+Ordem na filinha de prontinhos: 
+3(-2) 
+Ordem na filinha de bloqueados: 
+1(1) 2(2) 
+
+Processo: 3
+Executando X=4
+Executando SAIDA
+TESTE-3oú{™„ terminado. X=4 Y=10
+
+Ordem na filinha de prontinhos: 
+1(-3) 
+Ordem na filinha de bloqueados: 
+2(1) 
+
+Processo: 1
+Executando SAIDA
+TESTE-1 terminado. X=2 Y=10
+
+Ordem na filinha de prontinhos: 
+2(-3) 
+Ordem na filinha de bloqueados: 
+
+
+Processo: 2
+Executando X=30>
+Executando X=9ú_™
+Executando Y=1úe™
+
+Interrompendo TESTE-2 apos 03 instrucoes
+
+Or

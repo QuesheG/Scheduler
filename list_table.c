@@ -99,21 +99,15 @@ void update_blocked_queue(Scheduler * scheduler, bool update_last){
         if(!update_last && !p->next){ //skips the last process
             break;
         }
-
         scheduler->table[p->val]->io_timer--; //decrease the io_timer
         if(scheduler->table[p->val]->io_timer == 0){
-            printf("Retorna processo %d para fila de prontos\n", p->val);
             scheduler->table[p->val]->state = READY;
             
             Node * process = dequeue(q);
             enqueue_ready(scheduler, process);
-            
-            printf("\n");
             p = q->head;
             continue;
         }
-
-        printf("Processo %d esta com %d tempo\n", p->val, scheduler->table[p->val]->io_timer);
         p = p->next;
     }
 }

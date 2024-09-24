@@ -3,7 +3,7 @@
 #include "list_table.h"
 #include "schedule.h"
 
-//ctrl+F programas
+//TODO/FIXME : incluir média de trocas, de instruções e reload de créditos!
 
 int read_quantum(FILE *file) {
     char c = 'A';
@@ -60,8 +60,6 @@ int main(void) {
         Comm command;
         for (int i = 0; i < scheduler->quantum; i++) {
             command = line_processer(bcp);
-            
-            // fprintf(log, "Executando %s\n", bcp->content[bcp->regs.PC]);
             if(command == END){
                 fprintf(log, "%s terminado. X=%d. Y=%d\n", bcp->content[0], bcp->regs.X, bcp->regs.Y);
                 free(dequeue(scheduler->ready_queue)); //Removes from queue
@@ -86,7 +84,7 @@ int main(void) {
             enqueue_ready(scheduler, dequeue(scheduler->ready_queue)); //Reinsert in the ready queue
             if(bcp->state != BLOCK){
                 bcp->state = READY;
-                fprintf(log, "Interrompendo %s após %d instrucoes\n", bcp->content[0], scheduler->quantum); //FIXME: número de intruções errado
+                fprintf(log, "Interrompendo %s após %d instrucoes\n", bcp->content[0], scheduler->quantum);
                 update_blocked_queue(scheduler, true); 
             } else{
                 update_blocked_queue(scheduler, false);
@@ -95,7 +93,6 @@ int main(void) {
 
         //Escolhe proximo processo
         int res = next_process(scheduler);
-        // fprintf(log, "Proximo processo: %d\n\n", res); FIXME: checar necessidade
         switch (res) {
             case -1: //No processes to run
                 if(scheduler->blocked_queue->head){

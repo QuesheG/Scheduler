@@ -80,7 +80,7 @@ BCP * load_program(FILE * file, int credits){
         if(*(c + i) == '\n') {
             *(c + i) = '\0';
             bcp->content[pc] = (char *)malloc(sizeof(char) * (i + 1));
-            strcpy(bcp->content[pc], c);
+            strcpy(bcp->content[pc], c); //o erro tava nesse homi, o aprendizado é: se c já tem null no final, n precisa usar strncpy!!
             i = 0;
             pc += 1;
             continue;

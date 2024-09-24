@@ -50,7 +50,6 @@ typedef struct Scheduler {
 BCP * createBCP(State state, int credits);
 Scheduler * create_scheduler(int quantum); // Alteração para aceitar o quantum como argumento
 Comm line_processer(BCP * bcp);
-// void strncpy(char * dest, char * origin, int size);
 int get_process(Scheduler * scheduler);
 BCP * load_program(FILE * bcp, int credits);
 int read_priority(int proc_num);

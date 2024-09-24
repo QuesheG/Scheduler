@@ -15,7 +15,7 @@ BCP * createBCP(State state, int credits){
 }
 
 Scheduler * create_scheduler(int quantum){
-    Scheduler * s = (Scheduler *)malloc(sizeof(Scheduler));
+    Scheduler *s = (Scheduler *)malloc(sizeof(Scheduler));
 
     s->table = (BCP **)malloc(sizeof(BCP*) * 11);
     s->blocked_queue = create_queue();
@@ -80,7 +80,7 @@ BCP * load_program(FILE * file, int credits){
         if(*(c + i) == '\n') {
             *(c + i) = '\0';
             bcp->content[pc] = (char *)malloc(sizeof(char) * (i + 1));
-            strncpy(bcp->content[pc], c, i);
+            strcpy(bcp->content[pc], c);
             i = 0;
             pc += 1;
             continue;
@@ -90,7 +90,7 @@ BCP * load_program(FILE * file, int credits){
     if(i > 0) {
         *(c + i) = '\0';
         bcp->content[pc] = (char *)malloc(sizeof(char) * (i + 1));
-        strncpy(bcp->content[pc], c, i);
+        strcpy(bcp->content[pc], c);
     }
     free(c);
     return bcp;

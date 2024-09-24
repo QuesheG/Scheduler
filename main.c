@@ -3,7 +3,7 @@
 #include "list_table.h"
 #include "schedule.h"
 
-//TODO/FIXME : incluir média de trocas, de instruções e reload de créditos!
+//TODO/FIXME :incluir reload de créditos!
 
 int read_quantum(FILE *file) {
     char c = 'A';
@@ -43,6 +43,10 @@ int main(void) {
     char logfilename[32];
     sprintf(logfilename, "log%02d.txt", scheduler->quantum);
     FILE *log = fopen(logfilename, "w");
+    
+    int total_instructions = 0;
+    int total_exchanges = 0;
+    int total_process= 0;
 
     //Carregar programas em memoria
     load_all(scheduler, log);
@@ -58,18 +62,27 @@ int main(void) {
 
         fprintf(log, "Executando %s\n", bcp->content[0]);
         Comm command;
+
+        int instructions_executed = 0; 
+
         for (int i = 0; i < scheduler->quantum; i++) {
             command = line_processer(bcp);
+
+            instructions_executed++;
+
             if(command == END){
                 fprintf(log, "%s terminado. X=%d. Y=%d\n", bcp->content[0], bcp->regs.X, bcp->regs.Y);
                 free(dequeue(scheduler->ready_queue)); //Removes from queue
                 free(scheduler->table[proc]); //Removes from table
                 update_blocked_queue(scheduler, true);
+
+                total_process++; //increase total number of completed processe
+
                 break;
             }else if(command == IO){
                 fprintf(log, "E/S iniciada em %s\n", bcp->content[0]);
                 fprintf(log, "Interrompendo %s após %d instrucoes\n", bcp->content[0], i+1);
-                //FIXME: ^ log files precisam incluir também número médio de trocas
+              
 
                 bcp->state = BLOCK;
                 bcp->regs.PC++;
@@ -90,6 +103,8 @@ int main(void) {
                 update_blocked_queue(scheduler, false);
             }
         }
+        total_instructions += instructions_executed;  //increase total number of instructions executed
+        total_exchanges++; //increase total number of exchanges
 
         //Escolhe proximo processo
         int res = next_process(scheduler);
@@ -114,8 +129,13 @@ int main(void) {
         }
         //TODO: reload_credits();
     }
-    // fwrite("MEDIA DE TROCAS: %D\n", 0, 0, log); TODO: media de trocas e instruções
-    // fwrite("MEDIA DE INSTRUÇÕES: %D\n", 0, 0, log);
+
+    
+    double media_trocas = (double) total_exchanges / total_process;
+    double media_instrucoes = (double) total_instructions / total_exchanges;
+
+    fprintf(log, "MEDIA DE TROCAS: %.2f\n", media_trocas); 
+    fprintf(log, "MEDIA DE INSTRUÇÕES: %.2f\n", media_instrucoes);
     fprintf(log, "QUANTUM: %d\n", scheduler->quantum);
     
     fclose(log);

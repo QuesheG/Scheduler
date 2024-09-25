@@ -54,6 +54,20 @@ int main(void) {
     bool run = true;
 
     while (run) { //main while
+        Node * t = scheduler->ready_queue->head;
+        Node * b = scheduler->blocked_queue->head;
+        printf("Ordem na filinha de prontinhos: \n");
+        while (t) {
+            printf("%d(%d) ", t->val, scheduler->table[t->val]->credits);
+            t = t->next;
+        }
+        printf("\nOrdem na filinha de bloqueados: \n");
+        while (b) {
+            printf("%d(%d) ", b->val, scheduler->table[b->val]->io_timer);
+            b = b->next;
+        }
+        printf("\n\n");
+
         //Read the first process in queue
         int proc = get_process(scheduler);
         BCP * bcp = scheduler->table[proc];
@@ -105,6 +119,34 @@ int main(void) {
         }
         total_instructions += instructions_executed;  //increase total number of instructions executed
         total_exchanges++; //increase total number of exchanges
+        
+        //Check reload credits
+        if (bcp->credits <= 0) {
+            Node * rproc = scheduler->ready_queue->head;
+            Node * bproc = scheduler->blocked_queue->head;
+            bool check = false;
+
+            while (rproc) {
+                if (scheduler->table[rproc->val]->credits > 0) {
+                    check = true;
+                    break;
+                }
+                rproc = rproc->next;
+            }
+
+            while (bproc) {
+                if(scheduler->table[bproc->val]->credits > 0) {
+                    check = true;
+                    break;
+                }
+                bproc = bproc->next;
+            }
+
+            if (check == false) {
+                reload_credits(scheduler);
+            }
+        }
+        
 
         //Escolhe proximo processo
         int res = next_process(scheduler);
@@ -123,7 +165,11 @@ int main(void) {
             case 1: //Change the process
                 enqueue_ready(scheduler, dequeue(scheduler->ready_queue));
                 break;
-                
+
+            case 2: //Reload credits
+
+                break;
+
             default: //Keep running the same process
                 break;
         }

@@ -141,6 +141,7 @@ int next_process(Scheduler * scheduler){
     int actual_process = scheduler->ready_queue->head->val;
     int next_process = scheduler->ready_queue->head->next->val;
 
+    
     //if the actual credits are lower than the next credits, reenqueue the actual process
     if(scheduler->table[actual_process]->credits < scheduler->table[next_process]->credits){
         return 1;
@@ -168,4 +169,46 @@ bool load_all(Scheduler * scheduler, FILE * log) {
         fprintf(log, "Carregando %s\n", scheduler->table[i]->content[0]);
     }
     return true;
+}
+
+void reload_credits(Scheduler * scheduler){
+    if (scheduler->ready_queue->head) {
+        Node * p = scheduler->ready_queue->head;
+        Node * last_node = NULL;
+
+        while (p){
+            scheduler->table[p->val]->credits = read_priority(p->val);
+            p = p->next;
+        }
+        
+        p = scheduler->ready_queue->head;
+
+        while (p && p->next) {
+            //If the process' credits < next process' credits change positions
+            if(scheduler->table[p->val]->credits < scheduler->table[p->next->val]->credits){
+                if (last_node == NULL) {
+                    Node* aux = p->next->next;
+                    scheduler->ready_queue->head = p->next;
+                    scheduler->ready_queue->head->next = p;
+                    p->next = aux;
+                }else{
+                    last_node->next = p->next;
+                    p->next = p->next->next;
+                    last_node->next->next = p;
+                }
+                last_node = NULL;
+                p = scheduler->ready_queue->head;
+                continue;
+            }
+            last_node = p;
+            p = p->next;
+        }        
+    }
+    if (scheduler->blocked_queue->head) {
+        Node * p = scheduler->blocked_queue->head;
+        while (p) {
+            scheduler->table[p->val]->credits = read_priority(p->val);
+            p = p->next;
+        }
+    }
 }

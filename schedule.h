@@ -56,5 +56,6 @@ int read_priority(int proc_num);
 int get_process(Scheduler * scheduler);
 int next_process(Scheduler * scheduler);
 bool load_all(Scheduler * scheduler, FILE * log);
+void reload_credits(Scheduler * scheduler);
 
 #endif

@@ -3,8 +3,6 @@
 #include "list_table.h"
 #include "schedule.h"
 
-//TODO/FIXME :incluir reload de créditos!
-
 int read_quantum(FILE *file) {
     char c = 'A';
     char res[16];
@@ -20,7 +18,7 @@ int read_quantum(FILE *file) {
 }
 
 int main(void) {
-    //checa quantum
+    //Checks quantum
     FILE *q = fopen("programas/quantum.txt", "r");
     if(!q) {
         printf("Could not read quantum value\n");
@@ -29,7 +27,6 @@ int main(void) {
         return 0;
     }
 
-    //Cria escalonador
     Scheduler * scheduler = create_scheduler(read_quantum(q));
 
     fclose(q);
@@ -48,26 +45,12 @@ int main(void) {
     int total_exchanges = 0;
     int total_process= 0;
 
-    //Carregar programas em memoria
+    //Load programs in memory
     load_all(scheduler, log);
 
     bool run = true;
 
     while (run) { //main while
-        Node * t = scheduler->ready_queue->head;
-        Node * b = scheduler->blocked_queue->head;
-        printf("Ordem na filinha de prontinhos: \n");
-        while (t) {
-            printf("%d(%d) ", t->val, scheduler->table[t->val]->credits);
-            t = t->next;
-        }
-        printf("\nOrdem na filinha de bloqueados: \n");
-        while (b) {
-            printf("%d(%d) ", b->val, scheduler->table[b->val]->io_timer);
-            b = b->next;
-        }
-        printf("\n\n");
-
         //Read the first process in queue
         int proc = get_process(scheduler);
         BCP * bcp = scheduler->table[proc];
@@ -147,10 +130,7 @@ int main(void) {
             }
         }
         
-
-        //Escolhe proximo processo
-        int res = next_process(scheduler);
-        switch (res) {
+        switch (next_process(scheduler)) {
             case -1: //No processes to run
                 if(scheduler->blocked_queue->head){
                     do {
@@ -166,14 +146,9 @@ int main(void) {
                 enqueue_ready(scheduler, dequeue(scheduler->ready_queue));
                 break;
 
-            case 2: //Reload credits
-
-                break;
-
             default: //Keep running the same process
                 break;
         }
-        //TODO: reload_credits();
     }
 
     

@@ -43,20 +43,17 @@ Comm line_processer(BCP * bcp) {
     switch (bcp->content[line][0])
     {
         case 'C':
-            //código para COMM, acho q só diminuir o quantum e pá
             return COM;
         case 'S':
-            //fechar processo
+            //Close process
             return END;
         case 'E':
-            //Mudar processo para fila de entrada e saída (não sei se tem mais além disso)
+            //Change queue
             return IO;
         case 'X':
-            //Atribuição para variável X
             bcp->regs.X = atoi(&(bcp->content[line][2]));
             return ATRIB;
         case 'Y':
-            //Atribuição para variável Y
             bcp->regs.Y = atoi(&(bcp->content[line][2]));
             return ATRIB;
         
@@ -72,15 +69,12 @@ BCP * load_program(FILE * file, int credits){
     BCP * bcp = createBCP(READY, credits);
     int i = 0;
     int pc = 0;
-    /*     
-    estou (quesheg) reescrevendo a string c a cada iteração para aproveitar o espaço
-    de c mantendo o ponteiro para a origem e usando o i para calcular o próximo char
-    */
+  
     while(fread(c + i, sizeof(char), 1, file)) {
         if(*(c + i) == '\n') {
             *(c + i) = '\0';
             bcp->content[pc] = (char *)malloc(sizeof(char) * (i + 1));
-            strcpy(bcp->content[pc], c); //o erro tava nesse homi, o aprendizado é: se c já tem null no final, n precisa usar strncpy!!
+            strcpy(bcp->content[pc], c); 
             i = 0;
             pc += 1;
             continue;
@@ -128,7 +122,7 @@ int get_process(Scheduler * scheduler){
     return scheduler->ready_queue->head->val;
 }
 
-//return -1 if there is no process to run, 0 if the context isnt changed, 1 if context will be changed
+//Return -1 if there is no process to run, 0 if the context isnt changed, 1 if context will be changed
 int next_process(Scheduler * scheduler){
     if (!scheduler->ready_queue->head){
         return -1;
@@ -152,15 +146,15 @@ int next_process(Scheduler * scheduler){
 
 bool load_all(Scheduler * scheduler, FILE * log) {
     for (int i = 1; i <= 10; i++) {
-        char filename[32];  // Cria um buffer para armazenar o nome do arquivo
-        sprintf(filename, "programas/%02d.txt", i);  // Gera o nome do arquivo
+        char filename[32];
+        sprintf(filename, "programas/%02d.txt", i);  
         FILE * file = fopen(filename, "r");
 
         if(!file) return false;
         
         int credit = read_priority(i);
         
-        //carregar programas para memoria
+        //Load programs in memory
         scheduler->table[i] = load_program(file, credit);
 
         Node * process_node = create_node(i);
@@ -180,7 +174,7 @@ void reload_credits(Scheduler * scheduler){
             scheduler->table[p->val]->credits = read_priority(p->val);
             p = p->next;
         }
-        
+
         p = scheduler->ready_queue->head;
 
         while (p && p->next) {
